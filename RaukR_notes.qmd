@@ -1,0 +1,439 @@
+---
+title: "RaukR_notes"
+author: "CPB"
+format: html
+editor: visual
+code-overflow: scroll
+affiliation: PMC
+date-modified: date-modified
+---
+
+# Scripts, functions, and best practices
+
+To run executable Rscript:
+
+1.  Make script executable `chmod +x myscript.R`
+2.  First line of script should be `#!/usr/bin/env Rscript`
+
+### Text streams in R (pipe results to script)
+
+```{r}
+input_con  <- file("stdin")
+open(input_con)
+oneline=readLines(input_con, n = 1)
+close(input_con)
+```
+
+Tidyverse can read a `tibble` from text stream: `read_csv(file("stdin"))`
+
+Any `stdout`produced by the code (`print()`, `cat()`, etc) can be piped to a new process
+
+To write a `tibble`as a text stream: `cat(format_csv(my_tibble))`
+
+### Hidden variables/functions
+
+Hidden functions - for helper functions that the end user doesn't need to access
+
+Still there but users can't see them. Same for hidden variables.
+
+List hidden items `ls(all.names = TRUE)`
+
+### Functions
+
+Inside function - `a <<- "abc"` will assign the variable outside the function - **don't do**
+
+Good practice to give `data` as first argument, especially when using pipes `%>%`
+
+```{r}
+#| eval: false
+myfun <- function(x, arg)
+```
+
+Set arguments to defaults --- better too many args than too few. Also use elipses `…`
+
+#### Closure
+
+Function inside functions. There's some static part to the environment
+
+Double arrow affects global environment one step up, so doesn't affect the "real" global env. So other functions that use `i` are not affected.
+
+```{r}
+new_counter <- function() {
+  i <- 0
+  function() {
+    # do something useful, then ...
+    i <<- i + 1
+    i
+  }
+}
+
+counter1 <- new_counter(); counter2 <- new_counter()
+counter1(); counter1(); counter2()
+```
+
+First call to counter1 is `i=1` , counter2 is `i=2`
+
+#### Wrapper functions
+
+With wrapper functions you can set behavior of existing functions/plots. For example, setting the color, size of text, etc
+
+```{r}
+my_awesome_plot <- function(x, ...) {
+  plot(x, col='red', pch=19, cex.axis=.7, ...)
+}
+```
+
+### Check
+
+S4 and R6 classes - during OOP block
+
+# Quarto documents
+
+Set `freeze : true` in the yaml header to "cache" the rendered parts. Only the parts you change will be re-rendered. Avoids running and rendering everything again.
+
+```{yaml}
+execute:
+  freeze: true
+```
+
+Chunk options define how chunks behave
+
+-   `eval: false` to not evaluate a code chunk
+-   `echo: false` to hide input code
+-   `output: true` to show output, `asis` to skip styling
+-   `warning: false` hides warnings
+-   `message: false` hides messages
+-   `error: true` shows error message and continues code execution
+-   `include: false` suppresses all output
+
+## Interactive plots
+
+**plotly** - https://plotly.com/ggplot2/ - interactive ggplots with not too much extra work
+
+**rbokeh** - https://hafen.github.io/rbokeh/articles/rbokeh.html
+
+[Interactive stuff documentation](https://quarto.org/docs/interactive/)
+
+## Projects
+
+Common yaml parameters in `_quarto.yml`
+
+```{yaml}
+project:
+  output-dir: _output
+
+toc: true
+number-sections: true
+  
+format:
+  html:
+    css: styles.css
+  pdf:
+    documentclass: report
+    margin-left: 30mm
+```
+
+[Project documentation](https://quarto.org/docs/projects/quarto-projects.html)
+
+#### Callouts
+
+Show warnings, notes, tips, important, etc
+
+#### Diagrams
+
+Create diagrams with code.
+
+# Debugging
+
+-   Classes and type checking
+
+-   Loops usually fail at the beginning or at the end - testing at the boundaries
+
+-   Give small dataset to test
+
+-   *antibugging* 🕸: `stopifnot(y <= 75)`
+
+## Dumping frames
+
+R state is saved to file, which can be read with a debugger. Allows you to check values of variables
+
+```{r}
+options(error = quote(dump.frames(dumpto = "assets/testdump", to.file = T)))
+```
+
+## Traceback
+
+Shows what were the function calls and what parameters were passed to them when the error occurred.
+
+## Debug
+
+Using thee `debug` function
+
+```{r}
+#| eval: false
+h <- function(x, y) { 
+  f(x) 
+  f(y) 
+}
+
+debug(h)
+h('text', 7)
+undebug(h)
+```
+
+## Profiling
+
+### proc.time()
+
+*user time* -- CPU time charged for the execution of user instructions of the calling process,
+
+*system time* -- CPU time charged for execution by the system on behalf of the calling process,
+
+*elapsed time* -- total CPU time elapsed for the currently running R process.
+
+### system.time()
+
+## Optimization
+
+-   vectorize and allocate memory
+
+-   `microbenchmark`
+
+-   Matrix multiplications run faster on GPUs
+
+## Parallelization
+
+-   `parallel`
+
+```{r}
+library(parallel)
+num_cores <- detectCores() - 1
+cl <- makeCluster(num_cores) # Init cluster
+parLapply(cl, 1:2, function(x) { c(x, x^2, x^3)} )
+stopCluster(cl)
+```
+
+# Others
+
+Parenthesis around expression, etc -\> print
+
+```{r}
+(vec <- seq(0.1, 0.9, by=0.1))
+```
+
+`near` function - safe way of comparing if two vectors of floating point numbers are (pairwise) equal. This is safer than using `==`, because it has a built in tolerance
+
+`simpleWarning` & `simpleErrors`
+
+`ggplot autoplot` - Create a complete ggplot appropriate to a particular data type
+
+# Vectorization
+
+Vectorize user-written functions: `Vectorize` from the base package
+
+```{r}
+#| eval: false
+vectorized_is_a_droid <- base::Vectorize(is_a_droid, vectorize.args = c('x'))
+vectorized_is_a_droid(test)
+```
+
+`*apply` takes matrix as input, not vector, need to convert vector to matrix.
+
+`lapply` - apply function to each element of list
+
+`vapply` - you can specify expected output format, error if output not in that format
+
+`purrr` - map function to elements of vector and use `unlist`
+
+# Parallelization
+
+`Future` package
+
+Doesn't block using R during computing. It's possible to keep using R while computing in other cores
+
+> Unblocked R process during resolving of futures process
+
+variable `%<-%` {expression(s)}
+
+-   sequential - use during development
+
+-   multisession -starts different R sessions to parallelize
+
+-   multicore - use different cores for paralleliization
+
+### Sequential
+
+Need to set `plan(sequential)` as first line, like calling `library()`
+
+```{r}
+library(future)
+plan(sequential)
+
+a %<-% {
+  Sys.sleep(3)
+  a <- 1
+}
+b %<-% {
+  Sys.sleep(3)
+  b <- 2
+}
+
+a + b
+```
+
+Check number of cores in system `availableCores()`
+
+```{r}
+plan(multicore)
+
+a %<-% {
+  Sys.sleep(3)
+  a <- 1
+}
+b %<-% {
+  Sys.sleep(3)
+  b <- 2
+}
+
+a + b
+
+```
+
+### Cluster
+
+`plan(cluster)`
+
+```{r}
+#| eval: false
+plan(cluster, workers = c("n1", "n2", "n3"))
+```
+
+Specialized R package for interfacing with common HPC job schedulers exists: `future.batchtools`
+
+# Object oriented programming
+
+Methods inside functions == functions
+
+Classes can inherit properties from other classes
+
+### S4 classes
+
+Object name begins with `.` by convention
+
+`sealed =T` prevents redefining the same class (with same name)
+
+Access slots in class with `@`
+
+# TidyR
+
+### New pipes
+
+-   the `%>%` pipe
+
+-   `x %>% f` ≡ `f(x)`
+
+-   `x %>% f(y)` ≡ `f(x, y)`
+
+-   `x %>% f %>% g %>% h`≡ `h(g(f(x)))`
+
+-   `%T>%` - split data and send to the next two function calls
+
+```{r}
+rnorm(50) %>% 
+  matrix(ncol = 2) %T>% 
+  plot() %>% 
+  summary()
+```
+
+`%T>%` sends data to both `plot` and `summary`, not `plot` and *then* `summary`
+
+-   `%$%` - for functions that don't take data as the first argument, like cor = `cor(data$1, data$2)`. Exposition of variables.
+-   `|>` base R pipe
+
+```{r}
+mtcars |> lm(mpg ~ disp, data = _)
+```
+
+The `_` placeholder only works for arguments that are named in the function
+
+Sometimes we want to pass the resulting data to *other than the first* argument of the next function in chain. `magritter` provides placeholder mechanism for this:
+
+-   `x %>% f(y, .)` = `f(y, x)`,
+
+-   `x %>% f(y, z = .)` = `f(y, z = x)`.
+
+*\`%\*% (.,.)* - instead of doing x\*y, it will do \*(M,M)
+
+When sending item through pipe, need to use `{}` around the function so that the item only goes to the `.`, so it's not evaluated as the first item in the function
+
+ex: `M %>% {print_M_summ(nrow(.), ncol(.))}`
+
+Functional sequence / sequence of functions: `f <- . %>% sin %>% cos`
+
+## Tibbles
+
+When creating a tibble, a column can be a function of other columns
+
+Change how tibbles are saved
+
+-   `my_tibble %>% print(n = 50, width = Inf)`,
+-   `options(tibble.print_min = 15, tibble.print_max = 25)`,
+-   `options(dplyr.print_min = Inf)`,
+-   `options(tibble.width = Inf)`
+
+#### Parsing
+
+Locale = system definitions, which keyboard, time zone, etc
+
+```{r}
+charToRaw(text2)
+parse_character(text1, locale = locale(encoding = 'UTF-8'))
+guess_encoding(charToRaw("Test"))
+guess_encoding(charToRaw(text2))
+```
+
+### Data transformations
+
+`arrange` = `order` from data.table
+
+`select(-(x:z))` remove columns x-z
+
+`%>% select(x:z, everything())` reorder columns with x:z in the beginning, and all the rest following
+
+`mutate` create / change variables
+
+`transmute` - only keeps create columns
+
+`group_by` - perform actions per group (columns with grouping)
+
+`n()` count occurrences of category - like data.table `.N`
+
+`pivot_longer` - turn columns into rows
+
+```{r}
+bijou2 %>% 
+  pivot_longer(cols = c(`2008`, `2009`), names_to = 'year', values_to = 'price') %>% 
+  head(n = 5)
+```
+
+`pivot_wider` - turn rows into columns
+
+```{r}
+bijou3 %>% 
+  pivot_wider(names_from = dimension, values_from = measurement) %>% 
+  head(n = 5)
+```
+
+`unite`  - combine columns
+
+`complete` - complete missing values
+
+`left_join` keep all "keys" from first table
+
+`inner_join` only keep common "keys"
+
+`right_join` keep all keys from second table
+
+`full_join` keep all "keys"
+
+eager - needs the data to exist to use it. lazy - the data can be created in the same table creation call
