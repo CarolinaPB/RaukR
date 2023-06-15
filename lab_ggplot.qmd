@@ -264,7 +264,7 @@ colnames(me_edit) <- str_to_lower(colnames(me_edit))
 
 ## Tile
 
-We can build up a basic ggplot and heatmap tiles can be plotted using the geom `geom_tile`. \'year\' is mapped to the x-axis, \'state\' to the y-axis and fill color for the tiles is the \'total\' value.
+We can build up a basic ggplot and heatmap tiles can be plotted using the geom `geom_tile`. 'year' is mapped to the x-axis, 'state' to the y-axis and fill color for the tiles is the 'total' value.
 
 ```{r}
 tiled <- ggplot(me_edit, aes(year, state, fill = yearly_val, color = yearly_val))+
@@ -307,3 +307,23 @@ tiled3 <- tiled+ scale_y_discrete(expand=c(0,0))+
                                                  barwidth=10))
 tiled3
 ```
+
+## Title
+
+```{r}
+tiled4  <-tiled3 + theme(axis.title.x = element_blank(), 
+               axis.title.y = element_blank()) +
+  ggtitle("Measles cases") +coord_fixed()
+tiled4
+```
+
+## 3.7 Add annnotations
+
+Add the annotation line and text to denote the introduction of the vaccine. The line is at the position 1963. Custom font \'Gidole\' is used here. This can be skipped.
+
+```{r}
+tiled4 + geom_vline(xintercept = 1963, show.legend = T)+
+  annotate("text", x=1980, y = 40, label="Vaccination introduction")
+```
+
+## 3.8 Theme
