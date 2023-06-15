@@ -1,0 +1,154 @@
+---
+title: "lab_ggplot"
+format: html
+editor: visual
+---
+
+## 
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(stringr)
+
+library(ggplot2)
+library(ggrepel)
+library(patchwork)
+```
+
+```{r}
+data("iris")
+head(iris)
+```
+
+```{r}
+ggplot(data=iris,mapping=aes(x=Petal.Length,y=Petal.Width,color=Species))+
+  geom_point()+
+  geom_smooth(method="lm")
+```
+
+```{r}
+ggplot(data=iris,mapping=aes(x=Species,y=Petal.Width))+
+  geom_bar(stat="identity")
+```
+
+```{r}
+ggplot(data=iris,mapping=aes(x=Species))+
+  geom_bar()
+```
+
+# Exercises
+
+The aim of this challenge is to recreate the plot below originally published in [The Economist](https://www.economist.com/blogs/dailychart/2011/12/corruption-and-development). The graph is a scatterplot showing the relationship between *Corruption Index* and *Human Development Index* for various countries.
+
+```{r}
+ec <- read.csv("data_economist.csv",header=T)
+head(ec)
+```
+
+Make sure that the fields are of the correct type. The x-axis field 'CPI' and the y-axis field 'HDI' must be of numeric type. The categorical field 'Region' must be of Factor type.
+
+```{r}
+str(ec)
+```
+
+We need to first modify the region column. The current levels in the 'Region' field are:
+
+```{r}
+levels(ec$Region)
+```
+
+The strings can be renamed using string replacement or substitution. But a easier way to do it is to use `factor()`. The arguments `levels` and `labels` in function `factor()` can be used to rename factors
+
+```{r}
+ec$Region <- factor(ec$Region,levels = c("EU W. Europe",
+                                "Americas",
+                                "Asia Pacific",
+                                "East EU Cemt Asia",
+                                "MENA",
+                                "SSA"),
+                     labels = c("OECD",
+                                "Americas",
+                                "Asia &\nOceania",
+                                "Central &\nEastern Europe",
+                                "Middle East &\nNorth Africa",
+                                "Sub-Saharan\nAfrica"))
+```
+
+```{r}
+levels(ec$Region)
+```
+
+## 2.2 Start building up the basic plot.
+
+Provide data.frame 'ec' as the data and map field 'CPI' to the x-axis and 'HDI' to the y-axis. Use `geom_point()` to draw point geometry. To select shapes, see [here](https://www.google.se/search?q=r+pch&oq=R+pch). Circular shape can be drawn using 1, 16, 19, 20 and 21. Using shape '21' allows us to control stroke color, fill color and stroke thickness for the points. Check out `?geom_point` and look under 'Aesthetics' for the various possible aesthetic options. Set shape to 21, size to 3, stroke to 0.8 and fill to white.
+
+```{r}
+p <- ggplot(ec, aes(x = CPI, y = HDI, color = Region)) +
+  geom_point(shape = 21, size = 3, stroke = 0.8, fill = "white")
+plot(p)
+```
+
+Now, we add the trend line using `geom_smooth`. Check out `?geom_smooth` and look under 'Arguments' for argument options and 'Aesthetics' for the aesthetic options.
+
+-   Use method 'lm' and use a custom formula of `y~poly(x,2)` to approximate the curve seen on the plot. Turn off confidence interval shading. Set line thickness to 0.6 and line color to red.
+
+```{r}
+p +
+  geom_smooth(method = "lm", formula = y~poly(x,2), se = F, size = 0.6, color = "red")
+```
+
+Notice that the line in drawn over the points due to the plotting order. We want the points to be over the line. So reorder the geoms. Since we provided no aesthetic mappings to `geom_smooth`, there is no legend entry for the trendline. We can fake a legend entry by providing an aesthetic, for example; `aes(fill="red")`. We do not use the color aesthetic because it is already in use and would give us reduced control later on to modify this legend entry.
+
+```{r}
+ggplot(ec, aes(x = CPI, y = HDI, color = Region)) +
+    geom_smooth(method = "lm", formula = y~poly(x,2), se = F, size = 0.6, color = "red", aes(fill = "red"))+
+  geom_point(shape = 21, size = 3, stroke = 0.8, fill = "white")
+plot(p)
+```
+
+Now we add the text labels. Only a subset of countries are plotted. The list of countries to label is shown below.
+
+> "Congo","Afghanistan","Sudan","Myanmar","Iraq","Venezuela","Russia","Argentina","Brazil","Italy","South Africa","Cape Verde","Bhutan","Botswana","Britian","New Zealand","Greece","China","India","Rwanda","Spain","France","United States","Japan","Norway","Singapore","Barbados","Germany"
+
+-   Use `geom_text` to subset the original data.frame to the reduced set above and plot the labels as text. See `?geom_text`.
+
+```{r}
+labs <- c("Congo","Afghanistan","Sudan","Myanmar","Iraq","Venezuela","Russia","Argentina","Brazil","Italy","South Africa","Cape Verde","Bhutan","Botswana","Britian","New Zealand","Greece","China","India","Rwanda","Spain","France","United States","Japan","Norway","Singapore","Barbados","Germany")
+
+ggplot(ec, aes(x = CPI, y = HDI, color = Region)) +
+    geom_smooth(method = "lm", formula = y~poly(x,2), se = F, size = 0.6, color = "red", aes(fill = "red"))+
+  geom_point(shape = 21, size = 3, stroke = 0.8, fill = "white")
+plot(p)+
+  geom_text_repel(data=subset(ec, Country %in% labs), aes(label = Country))
+```
+
+Custom font can be used for the labels by providing the font name to argument `family` like so `geom_text(family="fontname")`. If you do not want to bother with fonts, just avoid the `family` argument in `geom_text` and skip this part.
+
+Using custom fonts can be tricky business. To use a font name, it must be installed on your system and it should be imported into the R environment. This can be done using the `extrafont` package. Try importing one of the fonts available on your system. Not all fonts work. `extrafont` prefers **.ttf** fonts. If a font doesn\'t work, try another.
+
+```{r}
+library(extrafont)
+font_import(pattern="Arial",prompt=FALSE)
+# load fonts for pdf
+loadfonts()
+# list available fonts in R
+fonts()
+```
+
+```{r}
+p <- ggplot(ec, aes(x = CPI, y = HDI, color = Region)) +
+    geom_smooth(method = "lm", formula = y~poly(x,2), se = F, size = 0.6, color = "red", aes(fill = "red"))+
+  geom_point(shape = 21, size = 3, stroke = 0.8, fill = "white")
+plot(p)+
+  geom_text_repel(data=subset(ec, Country %in% labs), aes(label = Country), ,family="Arial", box.padding=unit(1,'lines'),segment.size=0.25,
+                       size=3)
+```
+
+Next step is to adjust the axes breaks, axes labels, point colors and relabeling the trendline legend text.
+
+-   Change axes labels to \'Corruption Perceptions Index, 2011 (10=least corrupt)\' on the x-axis and \'Human Development Index, 2011 (1=best)\' on the y-axis. Set breaks on the x-axis from 1 to 10 by 1 increment and y-axis from 0.2 to 1.0 by 0.1 increments.
+
+```{r}
+
+```
