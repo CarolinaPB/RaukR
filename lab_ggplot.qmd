@@ -125,7 +125,7 @@ plot(p)+
 
 Custom font can be used for the labels by providing the font name to argument `family` like so `geom_text(family="fontname")`. If you do not want to bother with fonts, just avoid the `family` argument in `geom_text` and skip this part.
 
-Using custom fonts can be tricky business. To use a font name, it must be installed on your system and it should be imported into the R environment. This can be done using the `extrafont` package. Try importing one of the fonts available on your system. Not all fonts work. `extrafont` prefers **.ttf** fonts. If a font doesn\'t work, try another.
+Using custom fonts can be tricky business. To use a font name, it must be installed on your system and it should be imported into the R environment. This can be done using the `extrafont` package. Try importing one of the fonts available on your system. Not all fonts work. `extrafont` prefers **.ttf** fonts. If a font doesn't work, try another.
 
 ```{r}
 library(extrafont)
@@ -139,16 +139,171 @@ fonts()
 ```{r}
 p <- ggplot(ec, aes(x = CPI, y = HDI, color = Region)) +
     geom_smooth(method = "lm", formula = y~poly(x,2), se = F, size = 0.6, color = "red", aes(fill = "red"))+
-  geom_point(shape = 21, size = 3, stroke = 0.8, fill = "white")
-plot(p)+
-  geom_text_repel(data=subset(ec, Country %in% labs), aes(label = Country), ,family="Arial", box.padding=unit(1,'lines'),segment.size=0.25,
+  geom_point(shape = 21, size = 3, stroke = 0.8, fill = "white")+
+  geom_text_repel(data=subset(ec, Country %in% labs), aes(label = Country),family="Arial", box.padding=unit(1,'lines'),segment.size=0.25,
                        size=3)
+plot(p)
 ```
 
 Next step is to adjust the axes breaks, axes labels, point colors and relabeling the trendline legend text.
 
--   Change axes labels to \'Corruption Perceptions Index, 2011 (10=least corrupt)\' on the x-axis and \'Human Development Index, 2011 (1=best)\' on the y-axis. Set breaks on the x-axis from 1 to 10 by 1 increment and y-axis from 0.2 to 1.0 by 0.1 increments.
+-   Change axes labels to 'Corruption Perceptions Index, 2011 (10=least corrupt)' on the x-axis and 'Human Development Index, 2011 (1=best)' on the y-axis. Set breaks on the x-axis from 1 to 10 by 1 increment and y-axis from 0.2 to 1.0 by 0.1 increments.
 
 ```{r}
+p <- p +
+  scale_x_continuous(name = "Corruption Perceptions Index, 2011 (10=least corrupt)", breaks = seq(1,10, 1), limits = c(1,10))+
+  scale_y_continuous(name = "Human Development Index, 2011 (1=best)", breaks = seq(0,1,0.1), limits = c(0.2,1))
+plot(p)
+```
 
+Now we want to change the color palette for the points and modify the legend text for the trendline.
+
+-   Use `scale_color_manual()` to provide custom colors. These are the colors to use for the points: `"#23576E","#099FDB","#29B00E", "#208F84","#F55840","#924F3E"`.
+
+-   Use `scale_fill_manual` to change the trendline label since it's a fill scale. The legend entry for the trendline should read 'R\^2=52%'.
+
+```{r}
+p <- p+
+  scale_color_manual(values = c("#23576E","#099FDB","#29B00E", "#208F84","#F55840","#924F3E"))+
+  scale_fill_manual(values = "red", labels =expression(paste(R^2,"=52%")))
+plot(p)
+```
+
+Title and caption can be added with `labs`.
+
+-   Set the title to 'Corruption and human development'.
+
+-   Set the caption to 'Sources: Transparency International; UN Human Development Report'.
+
+```{r}
+p <- p+
+  labs(title = "Corruption and human development", 
+       caption = "Sources: Transparency International; UN Human Development Report")
+```
+
+We want to move the legend to the top and as a single row. This can be done using `theme()` option `legend.position`. See `?theme`. `guides()` is used to set the number of rows to 1. We also set a custom font for all text elements using `base_family="Gidole"`. This can be skipped if a font change is not required.
+
+```{r}
+p <- p+
+  theme(legend.position = "top")+
+  guides(color = guide_legend(nrow=1))
+plot(p)
+```
+
+Now we do some careful refining with themes.
+
+-   Turn off minor gridlines
+-   Turn off major gridlines on x-axis
+-   Remove the gray background
+-   Remove panel border
+-   Remove legend titles
+-   Make axes titles italic
+-   Turn off y-axis ticks
+-   Change x-axis ticks to color grey60
+-   Make plot title bold
+-   Decrease size of caption to size 8
+
+```{r}
+p <- p+theme(panel.grid.minor=element_blank(),
+          panel.grid.major.x=element_blank(),
+          panel.background=element_blank(),
+          panel.border=element_blank(),
+          legend.title=element_blank(),
+          axis.title=element_text(face="italic"),
+          axis.ticks.y=element_blank(),
+          axis.ticks.x=element_line(color="grey60"),
+          plot.title=element_text(face="bold"),
+          plot.caption=element_text(hjust=0,size=8))
+plot(p)
+```
+
+# 3 **WSJ Heatmap**
+
+The aim of this challenge is to recreate the plot below originally published in [The Wall Street Journal](http://graphics.wsj.com/infectious-diseases-and-vaccines/). The plot is a heatmap showing the normalized number of cases of measles across 51 US states from 1928 to 2003. X-axis shows years and y-axis shows the names of states. The color of the tiles denote the number of measles cases per 100,000 people. Introduction of the measles vaccine is shown as the black line in 1963.
+
+Start by reading in the [data](https://www.dropbox.com/s/19p8vku0i9np26b/data_wsj.csv?dl=1). This .csv file has two lines of comments so we need to skip 2 lines while reading in the data. We also add `stringsAsFactors=F` to avoid the automatic conversion of character fields to factor type.
+
+```{r}
+measles <- read.csv("data_wsj.csv", skip = 2, stringsAsFactors = F)
+
+```
+
+```{r}
+str(measles)
+```
+
+Looking at this dataset, there is going to be quite a bit of data clean-up and tidying before we can plot it. Here are the steps we need to take:
+
+-   The data needs to be transformed to long format.
+-   Replace all "-" with NAs
+-   The number of cases across each state is a character and needs to be converted to numeric
+-   Collapse (sum) week-level data to year.
+-   Abbreviate state names
+
+```{r}
+me <- as_tibble(measles)  %>% 
+  gather(key = "State", value = "value", -WEEK, -YEAR) %>% 
+  mutate(State = replace(State, State == "-", NA)) %>% 
+  mutate(value = replace(value, value == "-", NA)) %>% 
+  mutate(value = as.numeric(value))
+```
+
+```{r}
+fun1 <- function(x) ifelse(all(is.na(x)),NA,sum(x,na.rm=TRUE))
+```
+
+```{r}
+me_edit <- me %>% group_by(YEAR, State) %>% 
+  summarise(Yearly_val = fun1(value)) %>% 
+  mutate(State, State = str_replace_all(State, pattern = "\\.", replacement = " ")) %>% 
+  mutate(State = str_to_title(gsub(",", " ", State)))
+  
+colnames(me_edit) <- str_to_lower(colnames(me_edit))
+
+```
+
+## Tile
+
+We can build up a basic ggplot and heatmap tiles can be plotted using the geom `geom_tile`. \'year\' is mapped to the x-axis, \'state\' to the y-axis and fill color for the tiles is the \'total\' value.
+
+```{r}
+tiled <- ggplot(me_edit, aes(year, state, fill = yearly_val, color = yearly_val))+
+  geom_tile()
+plot(tiled)
+```
+
+Add borders around the tiles. We use `reorder(state,desc(state))` to reverse the order of states so that it reads A-Z from top to bottom.
+
+```{r}
+tiled <- ggplot(me_edit, aes(year, reorder(state,desc(state))))+
+  geom_tile(aes(fill = yearly_val), size = 0.25)
+
+plot(tiled)
+```
+
+## 3.4 Scales
+
+The extra space on left and right (gray) of the plot is removed using argument `expand` in `scales`. X-axis breaks are redefined at 10 year intervals from 1930 to 2010. Custom colors are used for the tiles: `"#e7f0fa","#c9e2f6","#95cbee","#0099dc","#4ab04a", "#ffd73e","#eec73a","#e29421","#f05336","#ce472e"`. Since the color scale is a fill color on a continuous value and we want to supply n new colors, we use `scale_fill_gradientn`. Tiles with missing value is set to the color `"grey90"`
+
+```{r}
+cols = c("#e7f0fa","#c9e2f6","#95cbee","#0099dc","#4ab04a", "#ffd73e","#eec73a","#e29421","#f05336","#ce472e")
+tiled2 <- tiled + 
+  scale_x_continuous(expand = c(0,0), breaks = seq(1930, 2010, 10)) +
+  scale_fill_gradientn(colours  = cols, na.value = "grey90" )
+plot(tiled2)
+```
+
+```{r}
+cols <- c("#e7f0fa","#c9e2f6","#95cbee","#0099dc","#4ab04a", "#ffd73e","#eec73a","#e29421","#f05336","#ce472e")
+
+tiled3 <- tiled+ scale_y_discrete(expand=c(0,0))+
+        scale_x_continuous(expand=c(0,0),breaks=seq(1930,2010,by=10))+
+        scale_fill_gradientn(colors=cols,na.value="grey95",
+                             limits=c(0,4000),
+                             values=c(0,0.01,0.02,0.03,0.09,0.1,0.15,0.25,0.4,0.5,1),
+                             labels=c("0k","1k","2k","3k","4k"),
+                             guide=guide_colourbar(ticks=T,nbin=50,
+                                                 barheight=.5,label=T, 
+                                                 barwidth=10))
+tiled3
 ```
