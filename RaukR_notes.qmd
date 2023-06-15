@@ -6,6 +6,9 @@ editor: visual
 code-overflow: scroll
 affiliation: PMC
 date-modified: date-modified
+execute:
+  eval: false
+toc: true
 ---
 
 # Scripts, functions, and best practices
@@ -424,7 +427,7 @@ bijou3 %>%
   head(n = 5)
 ```
 
-`unite`  - combine columns
+`unite` - combine columns
 
 `complete` - complete missing values
 
@@ -437,3 +440,245 @@ bijou3 %>%
 `full_join` keep all "keys"
 
 eager - needs the data to exist to use it. lazy - the data can be created in the same table creation call
+
+# Git
+
+`git reset HEAD~1` - go back `n` commits. The changes will still be there, we need to `restore` to take it back to how it was before this commit
+
+`git restore <our R script>`
+
+-   `git branch <name of branch>` : Create a new branch.
+-   `git branch` : See list of branches. Current branch marked with \*.
+-   `git checkout <name of branch>` : Move to branch.
+-   `git merge <name of branch>` : Merge the branch you are currently on with the branch named in command.
+
+# Reticulate (R + python)
+
+#### Import python modules to R
+
+```{r}
+library(reticulate)
+datetime <- import("datetime") # datetime is pythono module
+todays_r_date <- datetime$datetime$now()
+```
+
+Python function returns R object!
+
+`convert = F` in import statement -\> don't convert to R objecct
+
+#### Access Python's built-in functions directly in R
+
+```{r}
+builtins <- import_builtins()
+r_vec <- c(1, 5, 3, 4, 2, 2, 3, 2)
+str(r_vec)
+builtins$len(r_vec)
+```
+
+#### Possible to source own python scripts
+
+```{r}
+source_python("python_functions.py")
+```
+
+#### Execute python code
+
+```{r}
+py_run_string("result = [1,2,3]*2")
+py$result
+```
+
+```{python}
+a = len([1,2,3])
+```
+
+#### Run python scripts
+
+`py_run_file(filename)`
+
+Access python results with `py$<variable>`
+
+```{r}
+py$a
+```
+
+`py_to_r` - converts python object to R
+
+# ggplot
+
+ggplot prefers data in long format
+
+`geom_column` - best for histogram?
+
+`help.search("^geom_",package="ggplot2")` search for available geoms
+
+`stat` inside geom call
+
+-   stat="bin"
+
+-   stat="count" - how many elements in that group
+
+-   geom_line(stat= density)
+
+-   identity - calculate sum of y var, grouped by x var
+
+`geom_bar` - counts the occurrences of each unique x
+
+`args(geom_bar)` to check arguments available
+
+aesthetic mapping - inside `aes`
+
+aesthetic parameter - doesn't matter where specified
+
+`scale`
+
+-   `scale_<aesthetic>_<type>`
+
+-   `scale_<axis>_<type>`
+
+`facet_wrap` - tilde specifies that it's creating a matrix. One dimension
+
+`facet_grid` for two variables being compared. Can be two dimensions
+
+`coord_cartesian(xlim=c(2,8))` to zoom
+
+`element_rect` change background of plot
+
+```{r}
+element_rect(fill=NULL,color=NULL,size=NULL,linetype=NULL)
+p <- p + theme(
+    plot.background=element_rect(fill="#b3e2cd"),
+    panel.background=element_rect(fill="#fdcdac"),
+    panel.border=element_rect(fill=NA,color="#cbd5e8",size=3),
+    legend.background=element_rect(fill="#f4cae4"),
+    legend.box.background=element_rect(fill="#e6f5c9"),
+    strip.background=element_rect(fill="#fff2ae")
+)
+```
+
+#### Interactive - ggplotly
+
+```{r}
+ggplotly(p1)
+```
+
+Edit legend - stack items in one label, etc
+
+```{r}
+guides(size=guide_legend(nrow=2,byrow=TRUE),
+         color=guide_legend(nrow=3,byrow=T))
+```
+
+-   `ggrepel` - non-overlapping labels
+
+Add random things to the plot
+
+```{r}
++ annotate("text",x=2.5,y=2.1,label="There is a random line here")+
+  annotate("segment",x=2,xend=4,y=1.5,yend=2)
+```
+
+```{r}
+ggplot(data=iris,mapping=aes(x=Petal.Length,y=Petal.Width))+
+  geom_point(aes(color=Species))+
+  annotate("text",x=2.5,y=2.1,label="There is a random line here")+
+  annotate("segment",x=2,xend=4,y=1.5,yend=2)
+```
+
+# PURRR
+
+```{r}
+library(gapminder)
+```
+
+Combining two vectors can be done with `paste`
+
+```{r}
+child <- c("Reed", "Wesley", "Eli", "Toby") 
+age <-c( 14, 12, 12, 1)
+paste(child, "is", age, "years old")
+```
+
+`glue` - package to combine strings and interpolating - similar to `fstrings`?
+
+A lot of loops are not necessary
+
+`purrr` is an alternative to the `apply` functions
+
+`View(<list>)` manually inspect list and automatically create code along the way - click the button on the right
+
+#### map (for loop alternative)
+
+`purrr::map` - takes vector/list of size N and returns object of size N
+
+-   `map(.x, .f)`
+
+dot in front or argument names - reduce name collisions
+
+#### R lambda functions:
+
+AKA anonymous functions
+
+```{r}
+map(got_chars, \(x) length(x[["aliases"]]))
+map(got_chars, ~ length(.x[["aliases"]]))
+```
+
+`\(x) <expression>` - base R
+
+`~ <expression>` - tidyR version
+
+Set names in purrr pipelines early, they'll be available for the rest of the analyses.
+
+```{r}
+got_chars_named <- set_names(got_chars, map_chr(got_chars, "name"))
+```
+
+`enframe` - first col is names, second is list
+
+`tibbles` designed to be list friendly
+
+#### Set list names for a happier life.
+
+`got_chars_named <- set_names(got_chars, map_chr(got_chars, "name"))`
+
+#### There are many ways to specify .f.
+
+```{r}
+map(got_chars, \(x) length(x[["aliases"]]))
+map_chr(got_chars, "name")
+map(sw_vehicles, list("pilots", 1))
+```
+
+#### .default is useful for missing things.
+
+```{r}
+map(sw_vehicles, "pilots", .default = NA)
+map_chr(sw_vehicles, list("pilots", 1), .default = NA)
+```
+
+`discard` function - can take anonymous functions - removes those elements
+
+`walk` - do something for every element in the list, but don't do anything
+
+`map2` - map over two arguments
+
+`pmap` - parallel map
+
+Can transform JSON API call into tibble/df with R
+
+-   `hoist` - choose which cols to keep, rest is in `raw`
+
+-   `unnest_wider` - get one column for every field
+
+```{r}
+got_dat <- tibble(raw = got_chars)
+got_dat |>
+  hoist(raw, "name", "culture", "alive", first_aliases = list("aliases", 1))
+```
+
+`rowwise` works as `group_by` where every row is a group
+
+`across` - do something for each column
+
+`str_flatten_comma` - combines vector into string split by `,`
