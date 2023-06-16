@@ -788,3 +788,11 @@ Rename files
 # Shiny
 
 Needs a live environment
+
+Two file format for complex apps
+
+Server in one file, UI in another file
+
+Access data in input widget `input$`
+
+Access output n `output$`
