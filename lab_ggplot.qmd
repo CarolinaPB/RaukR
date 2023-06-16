@@ -319,7 +319,7 @@ tiled4
 
 ## 3.7 Add annnotations
 
-Add the annotation line and text to denote the introduction of the vaccine. The line is at the position 1963. Custom font \'Gidole\' is used here. This can be skipped.
+Add the annotation line and text to denote the introduction of the vaccine. The line is at the position 1963. Custom font 'Gidole' is used here. This can be skipped.
 
 ```{r}
 tiled4 + geom_vline(xintercept = 1963, show.legend = T)+
