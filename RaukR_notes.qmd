@@ -682,3 +682,66 @@ got_dat |>
 `across` - do something for each column
 
 `str_flatten_comma` - combines vector into string split by `,`
+
+# Packages
+
+Package in "source" form
+
+`DESCRIPTION` - description of package -metadata. Includes dependencies
+
+`R` - contains .r files with function defenitions
+
+`vignettes`
+
+`NAMESPACE`
+
+Steps:
+
+1.  `create_package("~/path/to/<package_name>")`
+2.  `library(devtools)`
+3.  `use_git()`
+4.  `use_github()`
+5.  `use_r("<my_function>")` - creates file for function
+6.  **`load_all()`** - make created functions available for testing
+    1.  `cmd+shift+L` - shortcut for `load_all(".")` - loads functions in the package
+7.  `check()` - check that R package is in working order, if it's a proper package
+    1.  0 errors, 0 warnings, 0 notes
+
+    2.  run often
+
+    3.  solve issues as soon as they show up
+8.  Edit DESCRIPTION
+    1.  Author info, title, description
+
+    2.  Add licence - **`use_mit_license()`**
+9.  Add function documentation
+    1.  `.Rd` file - R documentation
+
+    2.  Go to function file and add comments. These should start with `#'`  - place cursor inside function - go to `code` in the toolbar - `Insert Roxygen skeleton` -- inserts skeleton of function documentation
+
+        1.  `Cmd+Alt+Shift+R`
+
+```{r}
+#' Split a string
+#'
+#' @param x A character vector with one element. # what the arguments are
+#' @param split What to split on.
+#'
+#' @return A character vector.
+#' @export
+#'
+#' @examples
+#' x <- "alfa,bravo,charlie,delta"
+#' strsplit1(x, split = ",")
+```
+
+1.  `document()`
+    1.  `Cmd+Shift+D`
+2.  `check()`
+3.  `install()` - installs packages where other R packages are
+4.  restart R
+5.  `library(<package name>)` - **Functions ready to use!!!**
+
+## Testing
+
+Fix bug in package - create unit test for that specific bug
