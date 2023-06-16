@@ -695,6 +695,8 @@ Package in "source" form
 
 `NAMESPACE`
 
+There should be type/behavior checks in the functions - *assertions*
+
 Steps:
 
 1.  `create_package("~/path/to/<package_name>")`
@@ -745,3 +747,44 @@ Steps:
 ## Testing
 
 Fix bug in package - create unit test for that specific bug
+
+1.  Initiate testing `use_testthat()`
+2.  With the function file open, create companion test file with `use_test()`
+3.  Edit inside test file - supposed to read like a sentence, starts wth `test_that` , and expectations `expect_equal`
+    1.  `expect_equal` - first thing (function from package) should be equal to the second thing (expected result)
+4.  run `load_all`
+5.  run tests - either control enter, `test_active_file()`, `Run Tests` button, `test()`
+
+## Use third-party packages in your package
+
+-   `use_package("<package_name>")` - in package code, use functions from other packages as `<package>::<function>()`
+
+-   it's possible to inherit documentation from another package
+
+-   After changes to the functions (renaming, adding parameters, etc)
+
+    -   `load_all()` --\> `document()` -\> `load_all()` --\> check()
+
+Rename files
+
+-   `rename_files("<old_name>", "<new_name>")` - names without extension
+
+    -   automatically renamed several files
+
+### Set automatic check() with github actions
+
+`use_github_action(name = "check-standard")`
+
+## Create README
+
+`use_readme_rmd()` - creates `.rmd` file
+
+`build_readme()`
+
+## Host github pages
+
+`use_pkgdown_github_pages()` - adds github actions configuration,
+
+# Shiny
+
+Needs a live environment
