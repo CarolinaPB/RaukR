@@ -719,7 +719,7 @@ Steps:
 9.  Add function documentation
     1.  `.Rd` file - R documentation
 
-    2.  Go to function file and add comments. These should start with `#'`  - place cursor inside function - go to `code` in the toolbar - `Insert Roxygen skeleton` -- inserts skeleton of function documentation
+    2.  Go to function file and add comments. These should start with `#'` - place cursor inside function - go to `code` in the toolbar - `Insert Roxygen skeleton` -- inserts skeleton of function documentation
 
         1.  `Cmd+Alt+Shift+R`
 
@@ -796,3 +796,208 @@ Server in one file, UI in another file
 Access data in input widget `input$`
 
 Access output n `output$`
+
+# Machine learning & statistics
+
+N should be \> P, but in biology often not possible
+
+N = statistical observations (samples, cells)
+
+P = features (genes, proteins, etc)
+
+The curse of dimensionality - if P \>N, in naive statistical analysis ...
+
+can't increase dimentsionality infinitely.
+
+slide 7 - can't detect effect because data is high dimensionall - no diff between cases and controls because of the curse of dimensionality - points become far from each other, and equidistant
+
+#### Regularizations - LASSO
+
+OLS - ordinary least square
+
+Also considered feature selection
+
+Penalized OLS `+λ(|β1|+|β2|)` introduce *good* bias - need to prioritize features
+
+Cross validation - split data set into pieces several times - do optimization for lambda in most pieces
+
+With LASSO we start getting close to machine learning
+
+we want to find optimal value of `λ` , after this we find `β1` and `β2` - model is trained when you find optimal `c` and `β`
+
+slide 8 - y-axis = error, x-axis = `λ`
+
+minimum = optimal `λ` ?
+
+With LASSO you do bayesian statistics
+
+`L` = likelihood
+
+## Markov Chain Monte Carlo
+
+Needs a lot of points (expensive)
+
+Markov chain - good way to find the region close to the object we want
+
+without knowing the shape of the distribution, it can find where to sample
+
+markov process - the next step only remembers the previous step, not the other before
+
+a step is accepted if it leads to an increase in the posterior
+
+slide 11 -\
+(n1+2n2)/2(n0+n1+n2) - max Likelihood - optimization of likellihood
+
+comes from HW equilibrium\
+
+K-means - mark K points as cluster center - initial center of clusters
+
+check which center a certain point is closest to - then it belongs to that cluster
+
+create centroid at the center of the cluster. Compute k-means again until centers don't move
+
+traditional K-means used euclidean distance (which is not good for high dimentional space)
+
+slide13 - case of missing heritability - lack of prediction. in GWAS you find a lot of genes, but it doesn't mean they are actionable
+
+you can find genes associated with disease, but that doesn't mean you can use them for treatment/prognosis
+
+ML is based on prediction
+
+## Neural network
+
+neural network - you don't know the function, but you end up inferring it
+
+nodes, edges (with weights)
+
+NN with mild assumptions can approximate any function
+
+to avoid over-fitting - use error on test dataset. Looking at how error changes while training.
+
+ex: error not decreasing, accuracy plateauing
+
+low number of samples - over-fitting
+
+core of NN is gradient descent
+
+### Decision tree
+
+Gini index is optimization function. Tries to make classes as pure as possible
+
+gini index = 0 -\> very pure; split with lowest gini index is best split
+
+sometimes better to cut tree prematurely to not over fit - slide 24 - max_depth
+
+### Random forest
+
+Extension from decision tree (which is prone to overfitting) - trains multiple trees. Doesn't use all features in the data, but for each tree it uses a fraction of features. This way trees become uncorrelated. If they're correlated, they're not very informative.
+
+`Error = bias+variance`
+
+The more trees you train, the lower the variance gets - ensemble learning
+
+Train several trees and average the results
+
+if there are correlated features - go for LASSO instead of linear regression
+
+Always start with a simple model, like linear regression --\> random forest ---\> NN
+
+Deep learning is good for big data - huge datasets - ex: single cell
+
+One patient is one statistical observation
+
+Big data in life science - image data, single-cell, metagenomics
+
+# Tidymodels
+
+Many times, clustering can be replaced by basic statistics like ANOVA or t-test
+
+brier score to measure performance. Smaller values are better
+
+Important that the model is well callilbrated
+
+pillar package - how tibbles print
+
+tidymodels_prefer() - use tidy functions
+
+Validation set taken from the training set to validate results during development. Testing set should not be touched before testing
+
+Data from the same patient shouldn't be both in training and in testing
+
+Logistic regression - binary outcome. linear-ish model
+
+engine - the way we fit the model
+
+The `broom` package takes the messy output of built-in functions in R, such as `lm`, `nls`, or `t.test`, and turns them into tidy tibbles
+
+# 
+
+#### `workflow()`
+
+A workflow captures the entire modeling process: `fit()` and `predict()` apply to the preprocessing steps in addition to the actual model fit
+
+ensures that you don't have data leakage - you can't use the same dataset for testing and training
+
+dummy variables - convert non-numeric variables to binary variables - create new columns that have `1` if var present, if not, `0`
+
+re-sampling - use training set to get performance
+
+V-fold cross-validation - usually use 10 - then average the results
+
+### Bootstrap
+
+Set with same num of elements as the original set, but items were taken with replacement.
+
+samples that were never included in the bootstrap set will be used to estimate performance
+
+"out of bag data" - not sampled - the leftovers
+
+### Random forest
+
+number of trees should not be a tuning parameter.
+
+It's possible to set how many variables we want to use as predictors (randomly selected)- `mtry` (`rand_forest()`) - parsnip package)
+
+Random forest can deal with missing data
+
+Bagging - lower performance than random forest
+
+Create a random forest model
+
+```{r}
+library(tidymodels)
+rf_spec <- rand_forest(trees = 1000, mode = "classification")
+rf_spec
+```
+
+```{r}
+rf_wflow <- workflow(class ~ ., rf_spec)
+rf_wflow
+```
+
+Evaluating model performance
+
+```{r}
+ctrl_rs <- control_resamples(save_pred = TRUE)
+
+# Random forest uses random numbers so set the seed first
+
+set.seed(2)
+rf_res <- fit_resamples(rf_wflow, cell_rs, control = ctrl_rs, metrics = cls_metrics)
+collect_metrics(rf_res)
+```
+
+kap = 0 - good
+
+kap \< 0 - do the opposite of what the model tells you
+
+```{r}
+collect_predictions(rf_res) %>% 
+  ggplot(aes(.pred_PS)) + 
+    geom_histogram(col = "white", bins = 30) + 
+    facet_wrap(~ class, ncol = 1)
+```
+
+Predictors don't work in text data, they need numeric data - convert to binary
+
+Centering and scaling data - required by some models - all columns wit mean of zero, stdeviation = 1
