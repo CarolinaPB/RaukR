@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="CPB">
+
+<title>RaukR_notes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="RaukR_notes_files/libs/clipboard/clipboard.min.js"></script>
+<script src="RaukR_notes_files/libs/quarto-html/quarto.js"></script>
+<script src="RaukR_notes_files/libs/quarto-html/popper.min.js"></script>
+<script src="RaukR_notes_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="RaukR_notes_files/libs/quarto-html/anchor.min.js"></script>
+<link href="RaukR_notes_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="RaukR_notes_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="RaukR_notes_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="RaukR_notes_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="RaukR_notes_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#scripts-functions-and-best-practices" id="toc-scripts-functions-and-best-practices" class="nav-link active" data-scroll-target="#scripts-functions-and-best-practices">Scripts, functions, and best practices</a>
+  <ul class="collapse">
+  <li><a href="#text-streams-in-r-pipe-results-to-script" id="toc-text-streams-in-r-pipe-results-to-script" class="nav-link" data-scroll-target="#text-streams-in-r-pipe-results-to-script">Text streams in R (pipe results to script)</a></li>
+  <li><a href="#hidden-variablesfunctions" id="toc-hidden-variablesfunctions" class="nav-link" data-scroll-target="#hidden-variablesfunctions">Hidden variables/functions</a></li>
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a></li>
+  <li><a href="#check" id="toc-check" class="nav-link" data-scroll-target="#check">Check</a></li>
+  </ul></li>
+  <li><a href="#quarto-documents" id="toc-quarto-documents" class="nav-link" data-scroll-target="#quarto-documents">Quarto documents</a>
+  <ul class="collapse">
+  <li><a href="#interactive-plots" id="toc-interactive-plots" class="nav-link" data-scroll-target="#interactive-plots">Interactive plots</a></li>
+  <li><a href="#projects" id="toc-projects" class="nav-link" data-scroll-target="#projects">Projects</a></li>
+  </ul></li>
+  <li><a href="#debugging" id="toc-debugging" class="nav-link" data-scroll-target="#debugging">Debugging</a>
+  <ul class="collapse">
+  <li><a href="#dumping-frames" id="toc-dumping-frames" class="nav-link" data-scroll-target="#dumping-frames">Dumping frames</a></li>
+  <li><a href="#traceback" id="toc-traceback" class="nav-link" data-scroll-target="#traceback">Traceback</a></li>
+  <li><a href="#debug" id="toc-debug" class="nav-link" data-scroll-target="#debug">Debug</a></li>
+  <li><a href="#profiling" id="toc-profiling" class="nav-link" data-scroll-target="#profiling">Profiling</a>
+  <ul class="collapse">
+  <li><a href="#proc.time" id="toc-proc.time" class="nav-link" data-scroll-target="#proc.time">proc.time()</a></li>
+  <li><a href="#system.time" id="toc-system.time" class="nav-link" data-scroll-target="#system.time">system.time()</a></li>
+  </ul></li>
+  <li><a href="#optimization" id="toc-optimization" class="nav-link" data-scroll-target="#optimization">Optimization</a></li>
+  <li><a href="#parallelization" id="toc-parallelization" class="nav-link" data-scroll-target="#parallelization">Parallelization</a></li>
+  </ul></li>
+  <li><a href="#others" id="toc-others" class="nav-link" data-scroll-target="#others">Others</a></li>
+  <li><a href="#vectorization" id="toc-vectorization" class="nav-link" data-scroll-target="#vectorization">Vectorization</a></li>
+  <li><a href="#parallelization-1" id="toc-parallelization-1" class="nav-link" data-scroll-target="#parallelization-1">Parallelization</a>
+  <ul class="collapse">
+  <li><a href="#sequential" id="toc-sequential" class="nav-link" data-scroll-target="#sequential">Sequential</a></li>
+  <li><a href="#cluster" id="toc-cluster" class="nav-link" data-scroll-target="#cluster">Cluster</a></li>
+  </ul></li>
+  <li><a href="#object-oriented-programming" id="toc-object-oriented-programming" class="nav-link" data-scroll-target="#object-oriented-programming">Object oriented programming</a>
+  <ul class="collapse">
+  <li><a href="#s4-classes" id="toc-s4-classes" class="nav-link" data-scroll-target="#s4-classes">S4 classes</a></li>
+  </ul></li>
+  <li><a href="#tidyr" id="toc-tidyr" class="nav-link" data-scroll-target="#tidyr">TidyR</a>
+  <ul class="collapse">
+  <li><a href="#new-pipes" id="toc-new-pipes" class="nav-link" data-scroll-target="#new-pipes">New pipes</a></li>
+  <li><a href="#tibbles" id="toc-tibbles" class="nav-link" data-scroll-target="#tibbles">Tibbles</a>
+  <ul class="collapse">
+  <li><a href="#data-transformations" id="toc-data-transformations" class="nav-link" data-scroll-target="#data-transformations">Data transformations</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#git" id="toc-git" class="nav-link" data-scroll-target="#git">Git</a></li>
+  <li><a href="#reticulate-r-python" id="toc-reticulate-r-python" class="nav-link" data-scroll-target="#reticulate-r-python">Reticulate (R + python)</a></li>
+  <li><a href="#ggplot" id="toc-ggplot" class="nav-link" data-scroll-target="#ggplot">ggplot</a></li>
+  <li><a href="#purrr" id="toc-purrr" class="nav-link" data-scroll-target="#purrr">PURRR</a></li>
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages">Packages</a>
+  <ul class="collapse">
+  <li><a href="#testing" id="toc-testing" class="nav-link" data-scroll-target="#testing">Testing</a></li>
+  <li><a href="#use-third-party-packages-in-your-package" id="toc-use-third-party-packages-in-your-package" class="nav-link" data-scroll-target="#use-third-party-packages-in-your-package">Use third-party packages in your package</a>
+  <ul class="collapse">
+  <li><a href="#set-automatic-check-with-github-actions" id="toc-set-automatic-check-with-github-actions" class="nav-link" data-scroll-target="#set-automatic-check-with-github-actions">Set automatic check() with github actions</a></li>
+  </ul></li>
+  <li><a href="#create-readme" id="toc-create-readme" class="nav-link" data-scroll-target="#create-readme">Create README</a></li>
+  <li><a href="#host-github-pages" id="toc-host-github-pages" class="nav-link" data-scroll-target="#host-github-pages">Host github pages</a></li>
+  </ul></li>
+  <li><a href="#shiny" id="toc-shiny" class="nav-link" data-scroll-target="#shiny">Shiny</a></li>
+  <li><a href="#machine-learning-statistics" id="toc-machine-learning-statistics" class="nav-link" data-scroll-target="#machine-learning-statistics">Machine learning &amp; statistics</a>
+  <ul class="collapse">
+  <li><a href="#markov-chain-monte-carlo" id="toc-markov-chain-monte-carlo" class="nav-link" data-scroll-target="#markov-chain-monte-carlo">Markov Chain Monte Carlo</a></li>
+  <li><a href="#neural-network" id="toc-neural-network" class="nav-link" data-scroll-target="#neural-network">Neural network</a>
+  <ul class="collapse">
+  <li><a href="#decision-tree" id="toc-decision-tree" class="nav-link" data-scroll-target="#decision-tree">Decision tree</a></li>
+  <li><a href="#random-forest" id="toc-random-forest" class="nav-link" data-scroll-target="#random-forest">Random forest</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#tidymodels" id="toc-tidymodels" class="nav-link" data-scroll-target="#tidymodels">Tidymodels</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a>
+  <ul class="collapse">
+  <li><a href="#bootstrap" id="toc-bootstrap" class="nav-link" data-scroll-target="#bootstrap">Bootstrap</a></li>
+  <li><a href="#random-forest-1" id="toc-random-forest-1" class="nav-link" data-scroll-target="#random-forest-1">Random forest</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">RaukR_notes</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>CPB </p>
+          </div>
+  </div>
+    
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">Invalid Date</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<section id="scripts-functions-and-best-practices" class="level1">
+<h1>Scripts, functions, and best practices</h1>
+<p><a href="https://posit.co/resources/cheatsheets/">Posit cheatsheets</a></p>
+<p>To run executable Rscript:</p>
+<ol type="1">
+<li>Make script executable <code>chmod +x myscript.R</code></li>
+<li>First line of script should be <code>#!/usr/bin/env Rscript</code></li>
+</ol>
+<section id="text-streams-in-r-pipe-results-to-script" class="level3">
+<h3 class="anchored" data-anchor-id="text-streams-in-r-pipe-results-to-script">Text streams in R (pipe results to script)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>input_con  <span class="ot">&lt;-</span> <span class="fu">file</span>(<span class="st">"stdin"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">open</span>(input_con)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>oneline<span class="ot">=</span><span class="fu">readLines</span>(input_con, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">close</span>(input_con)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Tidyverse can read a <code>tibble</code> from text stream: <code>read_csv(file("stdin"))</code></p>
+<p>Any <code>stdout</code>produced by the code (<code>print()</code>, <code>cat()</code>, etc) can be piped to a new process</p>
+<p>To write a <code>tibble</code>as a text stream: <code>cat(format_csv(my_tibble))</code></p>
+</section>
+<section id="hidden-variablesfunctions" class="level3">
+<h3 class="anchored" data-anchor-id="hidden-variablesfunctions">Hidden variables/functions</h3>
+<p>Hidden functions - for helper functions that the end user doesn’t need to access</p>
+<p>Still there but users can’t see them. Same for hidden variables.</p>
+<p>List hidden items <code>ls(all.names = TRUE)</code></p>
+</section>
+<section id="functions" class="level3">
+<h3 class="anchored" data-anchor-id="functions">Functions</h3>
+<p>Inside function - <code>a &lt;&lt;- "abc"</code> will assign the variable outside the function - <strong>don’t do</strong></p>
+<p>Good practice to give <code>data</code> as first argument, especially when using pipes <code>%&gt;%</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>myfun <span class="ot">&lt;-</span> <span class="cf">function</span>(x, arg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Set arguments to defaults — better too many args than too few. Also use elipses <code>…</code></p>
+<section id="closure" class="level4">
+<h4 class="anchored" data-anchor-id="closure">Closure</h4>
+<p>Function inside functions. There’s some static part to the environment</p>
+<p>Double arrow affects global environment one step up, so doesn’t affect the “real” global env. So other functions that use <code>i</code> are not affected.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>new_counter <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>() {</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># do something useful, then ...</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    i <span class="ot">&lt;&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    i</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>counter1 <span class="ot">&lt;-</span> <span class="fu">new_counter</span>(); counter2 <span class="ot">&lt;-</span> <span class="fu">new_counter</span>()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">counter1</span>(); <span class="fu">counter1</span>(); <span class="fu">counter2</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>First call to counter1 is <code>i=1</code> , counter2 is <code>i=2</code></p>
+</section>
+<section id="wrapper-functions" class="level4">
+<h4 class="anchored" data-anchor-id="wrapper-functions">Wrapper functions</h4>
+<p>With wrapper functions you can set behavior of existing functions/plots. For example, setting the color, size of text, etc</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>my_awesome_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(x, <span class="at">col=</span><span class="st">'red'</span>, <span class="at">pch=</span><span class="dv">19</span>, <span class="at">cex.axis=</span>.<span class="dv">7</span>, ...)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="check" class="level3">
+<h3 class="anchored" data-anchor-id="check">Check</h3>
+<p>S4 and R6 classes - during OOP block</p>
+</section>
+</section>
+<section id="quarto-documents" class="level1">
+<h1>Quarto documents</h1>
+<p>Set <code>freeze : true</code> in the yaml header to “cache” the rendered parts. Only the parts you change will be re-rendered. Avoids running and rendering everything again.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">freeze</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Chunk options define how chunks behave</p>
+<ul>
+<li><code>eval: false</code> to not evaluate a code chunk</li>
+<li><code>echo: false</code> to hide input code</li>
+<li><code>output: true</code> to show output, <code>asis</code> to skip styling</li>
+<li><code>warning: false</code> hides warnings</li>
+<li><code>message: false</code> hides messages</li>
+<li><code>error: true</code> shows error message and continues code execution</li>
+<li><code>include: false</code> suppresses all output</li>
+</ul>
+<section id="interactive-plots" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-plots">Interactive plots</h2>
+<p><strong>plotly</strong> - https://plotly.com/ggplot2/ - interactive ggplots with not too much extra work</p>
+<p><strong>rbokeh</strong> - https://hafen.github.io/rbokeh/articles/rbokeh.html</p>
+<p><a href="https://quarto.org/docs/interactive/">Interactive stuff documentation</a></p>
+</section>
+<section id="projects" class="level2">
+<h2 class="anchored" data-anchor-id="projects">Projects</h2>
+<p>Common yaml parameters in <code>_quarto.yml</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">output-dir</span><span class="kw">:</span><span class="at"> _output</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">css</span><span class="kw">:</span><span class="at"> styles.css</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">documentclass</span><span class="kw">:</span><span class="at"> report</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">margin-left</span><span class="kw">:</span><span class="at"> 30mm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><a href="https://quarto.org/docs/projects/quarto-projects.html">Project documentation</a></p>
+<section id="callouts" class="level4">
+<h4 class="anchored" data-anchor-id="callouts">Callouts</h4>
+<p>Show warnings, notes, tips, important, etc</p>
+</section>
+<section id="diagrams" class="level4">
+<h4 class="anchored" data-anchor-id="diagrams">Diagrams</h4>
+<p>Create diagrams with code.</p>
+</section>
+</section>
+</section>
+<section id="debugging" class="level1">
+<h1>Debugging</h1>
+<ul>
+<li><p>Classes and type checking</p></li>
+<li><p>Loops usually fail at the beginning or at the end - testing at the boundaries</p></li>
+<li><p>Give small dataset to test</p></li>
+<li><p><em>antibugging</em>&nbsp;🕸:&nbsp;<code>stopifnot(y &lt;= 75)</code></p></li>
+</ul>
+<section id="dumping-frames" class="level2">
+<h2 class="anchored" data-anchor-id="dumping-frames">Dumping frames</h2>
+<p>R state is saved to file, which can be read with a debugger. Allows you to check values of variables</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">error =</span> <span class="fu">quote</span>(<span class="fu">dump.frames</span>(<span class="at">dumpto =</span> <span class="st">"assets/testdump"</span>, <span class="at">to.file =</span> T)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="traceback" class="level2">
+<h2 class="anchored" data-anchor-id="traceback">Traceback</h2>
+<p>Shows what were the function calls and what parameters were passed to them when the error occurred.</p>
+</section>
+<section id="debug" class="level2">
+<h2 class="anchored" data-anchor-id="debug">Debug</h2>
+<p>Using thee <code>debug</code> function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) { </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">f</span>(x) </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">f</span>(y) </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">debug</span>(h)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">h</span>(<span class="st">'text'</span>, <span class="dv">7</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">undebug</span>(h)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="profiling" class="level2">
+<h2 class="anchored" data-anchor-id="profiling">Profiling</h2>
+<section id="proc.time" class="level3">
+<h3 class="anchored" data-anchor-id="proc.time">proc.time()</h3>
+<p><em>user time</em> – CPU time charged for the execution of user instructions of the calling process,</p>
+<p><em>system time</em> – CPU time charged for execution by the system on behalf of the calling process,</p>
+<p><em>elapsed time</em> – total CPU time elapsed for the currently running R process.</p>
+</section>
+<section id="system.time" class="level3">
+<h3 class="anchored" data-anchor-id="system.time">system.time()</h3>
+</section>
+</section>
+<section id="optimization" class="level2">
+<h2 class="anchored" data-anchor-id="optimization">Optimization</h2>
+<ul>
+<li><p>vectorize and allocate memory</p></li>
+<li><p><code>microbenchmark</code></p></li>
+<li><p>Matrix multiplications run faster on GPUs</p></li>
+</ul>
+</section>
+<section id="parallelization" class="level2">
+<h2 class="anchored" data-anchor-id="parallelization">Parallelization</h2>
+<ul>
+<li><code>parallel</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parallel)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>num_cores <span class="ot">&lt;-</span> <span class="fu">detectCores</span>() <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(num_cores) <span class="co"># Init cluster</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">parLapply</span>(cl, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="cf">function</span>(x) { <span class="fu">c</span>(x, x<span class="sc">^</span><span class="dv">2</span>, x<span class="sc">^</span><span class="dv">3</span>)} )</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="others" class="level1">
+<h1>Others</h1>
+<p>Parenthesis around expression, etc -&gt; print</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>(vec <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="at">by=</span><span class="fl">0.1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>near</code> function - safe way of comparing if two vectors of floating point numbers are (pairwise) equal. This is safer than using <code>==</code>, because it has a built in tolerance</p>
+<p><code>simpleWarning</code> &amp; <code>simpleErrors</code></p>
+<p><code>ggplot autoplot</code> - Create a complete ggplot appropriate to a particular data type</p>
+</section>
+<section id="vectorization" class="level1">
+<h1>Vectorization</h1>
+<p>Vectorize user-written functions: <code>Vectorize</code> from the base package</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>vectorized_is_a_droid <span class="ot">&lt;-</span> base<span class="sc">::</span><span class="fu">Vectorize</span>(is_a_droid, <span class="at">vectorize.args =</span> <span class="fu">c</span>(<span class="st">'x'</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vectorized_is_a_droid</span>(test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>*apply</code> takes matrix as input, not vector, need to convert vector to matrix.</p>
+<p><code>lapply</code> - apply function to each element of list</p>
+<p><code>vapply</code> - you can specify expected output format, error if output not in that format</p>
+<p><code>purrr</code> - map function to elements of vector and use <code>unlist</code></p>
+</section>
+<section id="parallelization-1" class="level1">
+<h1>Parallelization</h1>
+<p><code>Future</code> package</p>
+<p>Doesn’t block using R during computing. It’s possible to keep using R while computing in other cores</p>
+<blockquote class="blockquote">
+<p>Unblocked R process during resolving of futures process</p>
+</blockquote>
+<p>variable <code>%&lt;-%</code> {expression(s)}</p>
+<ul>
+<li><p>sequential - use during development</p></li>
+<li><p>multisession -starts different R sessions to parallelize</p></li>
+<li><p>multicore - use different cores for paralleliization</p></li>
+</ul>
+<section id="sequential" class="level3">
+<h3 class="anchored" data-anchor-id="sequential">Sequential</h3>
+<p>Need to set <code>plan(sequential)</code> as first line, like calling <code>library()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(sequential)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>a <span class="sc">%&lt;-%</span> {</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.sleep</span>(<span class="dv">3</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>b <span class="sc">%&lt;-%</span> {</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.sleep</span>(<span class="dv">3</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>a <span class="sc">+</span> b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Check number of cores in system <code>availableCores()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multicore)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>a <span class="sc">%&lt;-%</span> {</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.sleep</span>(<span class="dv">3</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>b <span class="sc">%&lt;-%</span> {</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.sleep</span>(<span class="dv">3</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>a <span class="sc">+</span> b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="cluster" class="level3">
+<h3 class="anchored" data-anchor-id="cluster">Cluster</h3>
+<p><code>plan(cluster)</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(cluster, <span class="at">workers =</span> <span class="fu">c</span>(<span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Specialized R package for interfacing with common HPC job schedulers exists:&nbsp;<code>future.batchtools</code></p>
+</section>
+</section>
+<section id="object-oriented-programming" class="level1">
+<h1>Object oriented programming</h1>
+<p>Methods inside functions == functions</p>
+<p>Classes can inherit properties from other classes</p>
+<section id="s4-classes" class="level3">
+<h3 class="anchored" data-anchor-id="s4-classes">S4 classes</h3>
+<p>Object name begins with <code>.</code> by convention</p>
+<p><code>sealed =T</code> prevents redefining the same class (with same name)</p>
+<p>Access slots in class with <code>@</code></p>
+</section>
+</section>
+<section id="tidyr" class="level1">
+<h1>TidyR</h1>
+<section id="new-pipes" class="level3">
+<h3 class="anchored" data-anchor-id="new-pipes">New pipes</h3>
+<ul>
+<li><p>the <code>%&gt;%</code> pipe</p></li>
+<li><p><code>x %&gt;% f</code> ≡ <code>f(x)</code></p></li>
+<li><p><code>x %&gt;% f(y)</code> ≡ <code>f(x, y)</code></p></li>
+<li><p><code>x %&gt;% f %&gt;% g %&gt;% h</code>≡ <code>h(g(f(x)))</code></p></li>
+<li><p><code>%T&gt;%</code> - split data and send to the next two function calls</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">50</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">matrix</span>(<span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">%T&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>%T&gt;%</code> sends data to both <code>plot</code> and <code>summary</code>, not <code>plot</code> and <em>then</em> <code>summary</code></p>
+<ul>
+<li><code>%$%</code> - for functions that don’t take data as the first argument, like cor = <code>cor(data$1, data$2)</code>. Exposition of variables.</li>
+<li><code>|&gt;</code> base R pipe</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">|&gt;</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> disp, <span class="at">data =</span> _)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>_</code> placeholder only works for arguments that are named in the function</p>
+<p>Sometimes we want to pass the resulting data to <em>other than the first</em> argument of the next function in chain. <code>magritter</code> provides placeholder mechanism for this:</p>
+<ul>
+<li><p><code>x %&gt;% f(y, .)</code> = <code>f(y, x)</code>,</p></li>
+<li><p><code>x %&gt;% f(y, z = .)</code> = <code>f(y, z = x)</code>.</p></li>
+</ul>
+<p><em>`%*% (.,.)</em> - instead of doing x*y, it will do *(M,M)</p>
+<p>When sending item through pipe, need to use <code>{}</code> around the function so that the item only goes to the <code>.</code>, so it’s not evaluated as the first item in the function</p>
+<p>ex: <code>M %&gt;% {print_M_summ(nrow(.), ncol(.))}</code></p>
+<p>Functional sequence / sequence of functions: <code>f &lt;- . %&gt;% sin %&gt;% cos</code></p>
+</section>
+<section id="tibbles" class="level2">
+<h2 class="anchored" data-anchor-id="tibbles">Tibbles</h2>
+<p>When creating a tibble, a column can be a function of other columns</p>
+<p>Change how tibbles are saved</p>
+<ul>
+<li><code>my_tibble %&gt;% print(n = 50, width = Inf)</code>,</li>
+<li><code>options(tibble.print_min = 15, tibble.print_max = 25)</code>,</li>
+<li><code>options(dplyr.print_min = Inf)</code>,</li>
+<li><code>options(tibble.width = Inf)</code></li>
+</ul>
+<section id="parsing" class="level4">
+<h4 class="anchored" data-anchor-id="parsing">Parsing</h4>
+<p>Locale = system definitions, which keyboard, time zone, etc</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">charToRaw</span>(text2)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">parse_character</span>(text1, <span class="at">locale =</span> <span class="fu">locale</span>(<span class="at">encoding =</span> <span class="st">'UTF-8'</span>))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">guess_encoding</span>(<span class="fu">charToRaw</span>(<span class="st">"Test"</span>))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">guess_encoding</span>(<span class="fu">charToRaw</span>(text2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-transformations" class="level3">
+<h3 class="anchored" data-anchor-id="data-transformations">Data transformations</h3>
+<p><code>arrange</code> = <code>order</code> from data.table</p>
+<p><code>select(-(x:z))</code> remove columns x-z</p>
+<p><code>%&gt;% select(x:z, everything())</code> reorder columns with x:z in the beginning, and all the rest following</p>
+<p><code>mutate</code> create / change variables</p>
+<p><code>transmute</code> - only keeps create columns</p>
+<p><code>group_by</code> - perform actions per group (columns with grouping)</p>
+<p><code>n()</code> count occurrences of category - like data.table <code>.N</code></p>
+<p><code>pivot_longer</code> - turn columns into rows</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>bijou2 <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">2008</span><span class="st">`</span>, <span class="st">`</span><span class="at">2009</span><span class="st">`</span>), <span class="at">names_to =</span> <span class="st">'year'</span>, <span class="at">values_to =</span> <span class="st">'price'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>pivot_wider</code> - turn rows into columns</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>bijou3 <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> dimension, <span class="at">values_from =</span> measurement) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>unite</code> - combine columns</p>
+<p><code>complete</code> - complete missing values</p>
+<p><code>left_join</code> keep all “keys” from first table</p>
+<p><code>inner_join</code> only keep common “keys”</p>
+<p><code>right_join</code> keep all keys from second table</p>
+<p><code>full_join</code> keep all “keys”</p>
+<p>eager - needs the data to exist to use it. lazy - the data can be created in the same table creation call</p>
+</section>
+</section>
+</section>
+<section id="git" class="level1">
+<h1>Git</h1>
+<p><code>git reset HEAD~1</code> - go back <code>n</code> commits. The changes will still be there, we need to <code>restore</code> to take it back to how it was before this commit</p>
+<p><code>git restore &lt;our R script&gt;</code></p>
+<ul>
+<li><code>git branch &lt;name of branch&gt;</code> : Create a new branch.</li>
+<li><code>git branch</code> : See list of branches. Current branch marked with *.</li>
+<li><code>git checkout &lt;name of branch&gt;</code> : Move to branch.</li>
+<li><code>git merge &lt;name of branch&gt;</code> : Merge the branch you are currently on with the branch named in command.</li>
+</ul>
+</section>
+<section id="reticulate-r-python" class="level1">
+<h1>Reticulate (R + python)</h1>
+<section id="import-python-modules-to-r" class="level4">
+<h4 class="anchored" data-anchor-id="import-python-modules-to-r">Import python modules to R</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>datetime <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"datetime"</span>) <span class="co"># datetime is pythono module</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>todays_r_date <span class="ot">&lt;-</span> datetime<span class="sc">$</span>datetime<span class="sc">$</span><span class="fu">now</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Python function returns R object!</p>
+<p><code>convert = F</code> in import statement -&gt; don’t convert to R objecct</p>
+</section>
+<section id="access-pythons-built-in-functions-directly-in-r" class="level4">
+<h4 class="anchored" data-anchor-id="access-pythons-built-in-functions-directly-in-r">Access Python’s built-in functions directly in R</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>builtins <span class="ot">&lt;-</span> <span class="fu">import_builtins</span>()</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>r_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(r_vec)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>builtins<span class="sc">$</span><span class="fu">len</span>(r_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="possible-to-source-own-python-scripts" class="level4">
+<h4 class="anchored" data-anchor-id="possible-to-source-own-python-scripts">Possible to source own python scripts</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source_python</span>(<span class="st">"python_functions.py"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="execute-python-code" class="level4">
+<h4 class="anchored" data-anchor-id="execute-python-code">Execute python code</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">py_run_string</span>(<span class="st">"result = [1,2,3]*2"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>py<span class="sc">$</span>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="bu">len</span>([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="run-python-scripts" class="level4">
+<h4 class="anchored" data-anchor-id="run-python-scripts">Run python scripts</h4>
+<p><code>py_run_file(filename)</code></p>
+<p>Access python results with <code>py$&lt;variable&gt;</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>py<span class="sc">$</span>a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>py_to_r</code> - converts python object to R</p>
+</section>
+</section>
+<section id="ggplot" class="level1">
+<h1>ggplot</h1>
+<p>ggplot prefers data in long format</p>
+<p><code>geom_column</code> - best for histogram?</p>
+<p><code>help.search("^geom_",package="ggplot2")</code> search for available geoms</p>
+<p><code>stat</code> inside geom call</p>
+<ul>
+<li><p>stat=“bin”</p></li>
+<li><p>stat=“count” - how many elements in that group</p></li>
+<li><p>geom_line(stat= density)</p></li>
+<li><p>identity - calculate sum of y var, grouped by x var</p></li>
+</ul>
+<p><code>geom_bar</code> - counts the occurrences of each unique x</p>
+<p><code>args(geom_bar)</code> to check arguments available</p>
+<p>aesthetic mapping - inside <code>aes</code></p>
+<p>aesthetic parameter - doesn’t matter where specified</p>
+<p><code>scale</code></p>
+<ul>
+<li><p><code>scale_&lt;aesthetic&gt;_&lt;type&gt;</code></p></li>
+<li><p><code>scale_&lt;axis&gt;_&lt;type&gt;</code></p></li>
+</ul>
+<p><code>facet_wrap</code> - tilde specifies that it’s creating a matrix. One dimension</p>
+<p><code>facet_grid</code> for two variables being compared. Can be two dimensions</p>
+<p><code>coord_cartesian(xlim=c(2,8))</code> to zoom</p>
+<p><code>element_rect</code> change background of plot</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="cn">NULL</span>,<span class="at">color=</span><span class="cn">NULL</span>,<span class="at">size=</span><span class="cn">NULL</span>,<span class="at">linetype=</span><span class="cn">NULL</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> p <span class="sc">+</span> <span class="fu">theme</span>(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background=</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"#b3e2cd"</span>),</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background=</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"#fdcdac"</span>),</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border=</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="cn">NA</span>,<span class="at">color=</span><span class="st">"#cbd5e8"</span>,<span class="at">size=</span><span class="dv">3</span>),</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.background=</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"#f4cae4"</span>),</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.box.background=</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"#e6f5c9"</span>),</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background=</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"#fff2ae"</span>)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="interactive---ggplotly" class="level4">
+<h4 class="anchored" data-anchor-id="interactive---ggplotly">Interactive - ggplotly</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Edit legend - stack items in one label, etc</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">guides</span>(<span class="at">size=</span><span class="fu">guide_legend</span>(<span class="at">nrow=</span><span class="dv">2</span>,<span class="at">byrow=</span><span class="cn">TRUE</span>),</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">color=</span><span class="fu">guide_legend</span>(<span class="at">nrow=</span><span class="dv">3</span>,<span class="at">byrow=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><code>ggrepel</code> - non-overlapping labels</li>
+</ul>
+<p>Add random things to the plot</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> <span class="fu">annotate</span>(<span class="st">"text"</span>,<span class="at">x=</span><span class="fl">2.5</span>,<span class="at">y=</span><span class="fl">2.1</span>,<span class="at">label=</span><span class="st">"There is a random line here"</span>)<span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>,<span class="at">x=</span><span class="dv">2</span>,<span class="at">xend=</span><span class="dv">4</span>,<span class="at">y=</span><span class="fl">1.5</span>,<span class="at">yend=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>iris,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Petal.Length,<span class="at">y=</span>Petal.Width))<span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color=</span>Species))<span class="sc">+</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>,<span class="at">x=</span><span class="fl">2.5</span>,<span class="at">y=</span><span class="fl">2.1</span>,<span class="at">label=</span><span class="st">"There is a random line here"</span>)<span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>,<span class="at">x=</span><span class="dv">2</span>,<span class="at">xend=</span><span class="dv">4</span>,<span class="at">y=</span><span class="fl">1.5</span>,<span class="at">yend=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="purrr" class="level1">
+<h1>PURRR</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Combining two vectors can be done with <code>paste</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>child <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Reed"</span>, <span class="st">"Wesley"</span>, <span class="st">"Eli"</span>, <span class="st">"Toby"</span>) </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span><span class="fu">c</span>( <span class="dv">14</span>, <span class="dv">12</span>, <span class="dv">12</span>, <span class="dv">1</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(child, <span class="st">"is"</span>, age, <span class="st">"years old"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>glue</code> - package to combine strings and interpolating - similar to <code>fstrings</code>?</p>
+<p>A lot of loops are not necessary</p>
+<p><code>purrr</code> is an alternative to the <code>apply</code> functions</p>
+<p><code>View(&lt;list&gt;)</code> manually inspect list and automatically create code along the way - click the button on the right</p>
+<section id="map-for-loop-alternative" class="level4">
+<h4 class="anchored" data-anchor-id="map-for-loop-alternative">map (for loop alternative)</h4>
+<p><code>purrr::map</code> - takes vector/list of size N and returns object of size N</p>
+<ul>
+<li><code>map(.x, .f)</code></li>
+</ul>
+<p>dot in front or argument names - reduce name collisions</p>
+</section>
+<section id="r-lambda-functions" class="level4">
+<h4 class="anchored" data-anchor-id="r-lambda-functions">R lambda functions:</h4>
+<p>AKA anonymous functions</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(got_chars, \(x) <span class="fu">length</span>(x[[<span class="st">"aliases"</span>]]))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(got_chars, <span class="sc">~</span> <span class="fu">length</span>(.x[[<span class="st">"aliases"</span>]]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>\(x) &lt;expression&gt;</code> - base R</p>
+<p><code>~ &lt;expression&gt;</code> - tidyR version</p>
+<p>Set names in purrr pipelines early, they’ll be available for the rest of the analyses.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>got_chars_named <span class="ot">&lt;-</span> <span class="fu">set_names</span>(got_chars, <span class="fu">map_chr</span>(got_chars, <span class="st">"name"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>enframe</code> - first col is names, second is list</p>
+<p><code>tibbles</code> designed to be list friendly</p>
+</section>
+<section id="set-list-names-for-a-happier-life." class="level4">
+<h4 class="anchored" data-anchor-id="set-list-names-for-a-happier-life.">Set list names for a happier life.</h4>
+<p><code>got_chars_named &lt;- set_names(got_chars, map_chr(got_chars, "name"))</code></p>
+</section>
+<section id="there-are-many-ways-to-specify-.f." class="level4">
+<h4 class="anchored" data-anchor-id="there-are-many-ways-to-specify-.f.">There are many ways to specify .f.</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(got_chars, \(x) <span class="fu">length</span>(x[[<span class="st">"aliases"</span>]]))</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">map_chr</span>(got_chars, <span class="st">"name"</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(sw_vehicles, <span class="fu">list</span>(<span class="st">"pilots"</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="default-is-useful-for-missing-things." class="level4">
+<h4 class="anchored" data-anchor-id="default-is-useful-for-missing-things.">.default is useful for missing things.</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(sw_vehicles, <span class="st">"pilots"</span>, <span class="at">.default =</span> <span class="cn">NA</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">map_chr</span>(sw_vehicles, <span class="fu">list</span>(<span class="st">"pilots"</span>, <span class="dv">1</span>), <span class="at">.default =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>discard</code> function - can take anonymous functions - removes those elements</p>
+<p><code>walk</code> - do something for every element in the list, but don’t do anything</p>
+<p><code>map2</code> - map over two arguments</p>
+<p><code>pmap</code> - parallel map</p>
+<p>Can transform JSON API call into tibble/df with R</p>
+<ul>
+<li><p><code>hoist</code> - choose which cols to keep, rest is in <code>raw</code></p></li>
+<li><p><code>unnest_wider</code> - get one column for every field</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>got_dat <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">raw =</span> got_chars)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>got_dat <span class="sc">|&gt;</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hoist</span>(raw, <span class="st">"name"</span>, <span class="st">"culture"</span>, <span class="st">"alive"</span>, <span class="at">first_aliases =</span> <span class="fu">list</span>(<span class="st">"aliases"</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>rowwise</code> works as <code>group_by</code> where every row is a group</p>
+<p><code>across</code> - do something for each column</p>
+<p><code>str_flatten_comma</code> - combines vector into string split by <code>,</code></p>
+</section>
+</section>
+<section id="packages" class="level1">
+<h1>Packages</h1>
+<p>Package in “source” form</p>
+<p><code>DESCRIPTION</code> - description of package -metadata. Includes dependencies</p>
+<p><code>R</code> - contains .r files with function defenitions</p>
+<p><code>vignettes</code></p>
+<p><code>NAMESPACE</code></p>
+<p>There should be type/behavior checks in the functions - <em>assertions</em></p>
+<p>Steps:</p>
+<ol type="1">
+<li><code>create_package("~/path/to/&lt;package_name&gt;")</code></li>
+<li><code>library(devtools)</code></li>
+<li><code>use_git()</code></li>
+<li><code>use_github()</code></li>
+<li><code>use_r("&lt;my_function&gt;")</code> - creates file for function</li>
+<li><strong><code>load_all()</code></strong> - make created functions available for testing
+<ol type="1">
+<li><code>cmd+shift+L</code> - shortcut for <code>load_all(".")</code> - loads functions in the package</li>
+</ol></li>
+<li><code>check()</code> - check that R package is in working order, if it’s a proper package
+<ol type="1">
+<li><p>0 errors, 0 warnings, 0 notes</p></li>
+<li><p>run often</p></li>
+<li><p>solve issues as soon as they show up</p></li>
+</ol></li>
+<li>Edit DESCRIPTION
+<ol type="1">
+<li><p>Author info, title, description</p></li>
+<li><p>Add licence - <strong><code>use_mit_license()</code></strong></p></li>
+</ol></li>
+<li>Add function documentation
+<ol type="1">
+<li><p><code>.Rd</code> file - R documentation</p></li>
+<li><p>Go to function file and add comments. These should start with <code>#'</code> - place cursor inside function - go to <code>code</code> in the toolbar - <code>Insert Roxygen skeleton</code> – inserts skeleton of function documentation</p>
+<ol type="1">
+<li><code>Cmd+Alt+Shift+R</code></li>
+</ol></li>
+</ol></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Split a string</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param x A character vector with one element. # what the arguments are</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param split What to split on.</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' @return A character vector.</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' @export</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="co">#' @examples</span></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="co">#' x &lt;- "alfa,bravo,charlie,delta"</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a><span class="co">#' strsplit1(x, split = ",")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="1">
+<li><code>document()</code>
+<ol type="1">
+<li><code>Cmd+Shift+D</code></li>
+</ol></li>
+<li><code>check()</code></li>
+<li><code>install()</code> - installs packages where other R packages are</li>
+<li>restart R</li>
+<li><code>library(&lt;package name&gt;)</code> - <strong>Functions ready to use!!!</strong></li>
+</ol>
+<section id="testing" class="level2">
+<h2 class="anchored" data-anchor-id="testing">Testing</h2>
+<p>Fix bug in package - create unit test for that specific bug</p>
+<ol type="1">
+<li>Initiate testing <code>use_testthat()</code></li>
+<li>With the function file open, create companion test file with <code>use_test()</code></li>
+<li>Edit inside test file - supposed to read like a sentence, starts wth <code>test_that</code> , and expectations <code>expect_equal</code>
+<ol type="1">
+<li><code>expect_equal</code> - first thing (function from package) should be equal to the second thing (expected result)</li>
+</ol></li>
+<li>run <code>load_all</code></li>
+<li>run tests - either control enter, <code>test_active_file()</code>, <code>Run Tests</code> button, <code>test()</code></li>
+</ol>
+</section>
+<section id="use-third-party-packages-in-your-package" class="level2">
+<h2 class="anchored" data-anchor-id="use-third-party-packages-in-your-package">Use third-party packages in your package</h2>
+<ul>
+<li><p><code>use_package("&lt;package_name&gt;")</code> - in package code, use functions from other packages as <code>&lt;package&gt;::&lt;function&gt;()</code></p></li>
+<li><p>it’s possible to inherit documentation from another package</p></li>
+<li><p>After changes to the functions (renaming, adding parameters, etc)</p>
+<ul>
+<li><code>load_all()</code> –&gt; <code>document()</code> -&gt; <code>load_all()</code> –&gt; check()</li>
+</ul></li>
+</ul>
+<p>Rename files</p>
+<ul>
+<li><p><code>rename_files("&lt;old_name&gt;", "&lt;new_name&gt;")</code> - names without extension</p>
+<ul>
+<li>automatically renamed several files</li>
+</ul></li>
+</ul>
+<section id="set-automatic-check-with-github-actions" class="level3">
+<h3 class="anchored" data-anchor-id="set-automatic-check-with-github-actions">Set automatic check() with github actions</h3>
+<p><code>use_github_action(name = "check-standard")</code></p>
+</section>
+</section>
+<section id="create-readme" class="level2">
+<h2 class="anchored" data-anchor-id="create-readme">Create README</h2>
+<p><code>use_readme_rmd()</code> - creates <code>.rmd</code> file</p>
+<p><code>build_readme()</code></p>
+</section>
+<section id="host-github-pages" class="level2">
+<h2 class="anchored" data-anchor-id="host-github-pages">Host github pages</h2>
+<p><code>use_pkgdown_github_pages()</code> - adds github actions configuration,</p>
+</section>
+</section>
+<section id="shiny" class="level1">
+<h1>Shiny</h1>
+<p>Needs a live environment</p>
+<p>Two file format for complex apps</p>
+<p>Server in one file, UI in another file</p>
+<p>Access data in input widget <code>input$</code></p>
+<p>Access output n <code>output$</code></p>
+</section>
+<section id="machine-learning-statistics" class="level1">
+<h1>Machine learning &amp; statistics</h1>
+<p>N should be &gt; P, but in biology often not possible</p>
+<p>N = statistical observations (samples, cells)</p>
+<p>P = features (genes, proteins, etc)</p>
+<p>The curse of dimensionality - if P &gt;N, in naive statistical analysis …</p>
+<p>can’t increase dimentsionality infinitely.</p>
+<p>slide 7 - can’t detect effect because data is high dimensionall - no diff between cases and controls because of the curse of dimensionality - points become far from each other, and equidistant</p>
+<section id="regularizations---lasso" class="level4">
+<h4 class="anchored" data-anchor-id="regularizations---lasso">Regularizations - LASSO</h4>
+<p>OLS - ordinary least square</p>
+<p>Also considered feature selection</p>
+<p>Penalized OLS <code>+λ(|β1|+|β2|)</code> introduce <em>good</em> bias - need to prioritize features</p>
+<p>Cross validation - split data set into pieces several times - do optimization for lambda in most pieces</p>
+<p>With LASSO we start getting close to machine learning</p>
+<p>we want to find optimal value of <code>λ</code> , after this we find <code>β1</code> and <code>β2</code> - model is trained when you find optimal <code>c</code> and <code>β</code></p>
+<p>slide 8 - y-axis = error, x-axis = <code>λ</code></p>
+<p>minimum = optimal <code>λ</code> ?</p>
+<p>With LASSO you do bayesian statistics</p>
+<p><code>L</code> = likelihood</p>
+</section>
+<section id="markov-chain-monte-carlo" class="level2">
+<h2 class="anchored" data-anchor-id="markov-chain-monte-carlo">Markov Chain Monte Carlo</h2>
+<p>Needs a lot of points (expensive)</p>
+<p>Markov chain - good way to find the region close to the object we want</p>
+<p>without knowing the shape of the distribution, it can find where to sample</p>
+<p>markov process - the next step only remembers the previous step, not the other before</p>
+<p>a step is accepted if it leads to an increase in the posterior</p>
+<p>slide 11 -<br>
+(n1+2n2)/2(n0+n1+n2) - max Likelihood - optimization of likellihood</p>
+<p>comes from HW equilibrium<br>
+</p>
+<p>K-means - mark K points as cluster center - initial center of clusters</p>
+<p>check which center a certain point is closest to - then it belongs to that cluster</p>
+<p>create centroid at the center of the cluster. Compute k-means again until centers don’t move</p>
+<p>traditional K-means used euclidean distance (which is not good for high dimentional space)</p>
+<p>slide13 - case of missing heritability - lack of prediction. in GWAS you find a lot of genes, but it doesn’t mean they are actionable</p>
+<p>you can find genes associated with disease, but that doesn’t mean you can use them for treatment/prognosis</p>
+<p>ML is based on prediction</p>
+</section>
+<section id="neural-network" class="level2">
+<h2 class="anchored" data-anchor-id="neural-network">Neural network</h2>
+<p>neural network - you don’t know the function, but you end up inferring it</p>
+<p>nodes, edges (with weights)</p>
+<p>NN with mild assumptions can approximate any function</p>
+<p>to avoid over-fitting - use error on test dataset. Looking at how error changes while training.</p>
+<p>ex: error not decreasing, accuracy plateauing</p>
+<p>low number of samples - over-fitting</p>
+<p>core of NN is gradient descent</p>
+<section id="decision-tree" class="level3">
+<h3 class="anchored" data-anchor-id="decision-tree">Decision tree</h3>
+<p>Gini index is optimization function. Tries to make classes as pure as possible</p>
+<p>gini index = 0 -&gt; very pure; split with lowest gini index is best split</p>
+<p>sometimes better to cut tree prematurely to not over fit - slide 24 - max_depth</p>
+</section>
+<section id="random-forest" class="level3">
+<h3 class="anchored" data-anchor-id="random-forest">Random forest</h3>
+<p>Extension from decision tree (which is prone to overfitting) - trains multiple trees. Doesn’t use all features in the data, but for each tree it uses a fraction of features. This way trees become uncorrelated. If they’re correlated, they’re not very informative.</p>
+<p><code>Error = bias+variance</code></p>
+<p>The more trees you train, the lower the variance gets - ensemble learning</p>
+<p>Train several trees and average the results</p>
+<p>if there are correlated features - go for LASSO instead of linear regression</p>
+<p>Always start with a simple model, like linear regression –&gt; random forest —&gt; NN</p>
+<p>Deep learning is good for big data - huge datasets - ex: single cell</p>
+<p>One patient is one statistical observation</p>
+<p>Big data in life science - image data, single-cell, metagenomics</p>
+</section>
+</section>
+</section>
+<section id="tidymodels" class="level1">
+<h1>Tidymodels</h1>
+<p>Many times, clustering can be replaced by basic statistics like ANOVA or t-test</p>
+<p>brier score to measure performance. Smaller values are better</p>
+<p>Important that the model is well callilbrated</p>
+<p>pillar package - how tibbles print</p>
+<p>tidymodels_prefer() - use tidy functions</p>
+<p>Validation set taken from the training set to validate results during development. Testing set should not be touched before testing</p>
+<p>Data from the same patient shouldn’t be both in training and in testing</p>
+<p>Logistic regression - binary outcome. linear-ish model</p>
+<p>engine - the way we fit the model</p>
+<p>The <code>broom</code> package takes the messy output of built-in functions in R, such as&nbsp;<code>lm</code>,&nbsp;<code>nls</code>, or&nbsp;<code>t.test</code>, and turns them into tidy tibbles</p>
+</section>
+<section id="section" class="level1">
+<h1></h1>
+<section id="workflow" class="level4">
+<h4 class="anchored" data-anchor-id="workflow"><code>workflow()</code></h4>
+<p>A workflow captures the entire modeling process:&nbsp;<code>fit()</code>&nbsp;and&nbsp;<code>predict()</code>&nbsp;apply to the preprocessing steps in addition to the actual model fit</p>
+<p>ensures that you don’t have data leakage - you can’t use the same dataset for testing and training</p>
+<p>dummy variables - convert non-numeric variables to binary variables - create new columns that have <code>1</code> if var present, if not, <code>0</code></p>
+<p>re-sampling - use training set to get performance</p>
+<p>V-fold cross-validation - usually use 10 - then average the results</p>
+</section>
+<section id="bootstrap" class="level3">
+<h3 class="anchored" data-anchor-id="bootstrap">Bootstrap</h3>
+<p>Set with same num of elements as the original set, but items were taken with replacement.</p>
+<p>samples that were never included in the bootstrap set will be used to estimate performance</p>
+<p>“out of bag data” - not sampled - the leftovers</p>
+</section>
+<section id="random-forest-1" class="level3">
+<h3 class="anchored" data-anchor-id="random-forest-1">Random forest</h3>
+<p>number of trees should not be a tuning parameter.</p>
+<p>It’s possible to set how many variables we want to use as predictors (randomly selected)- <code>mtry</code> (<code>rand_forest()</code>) - parsnip package)</p>
+<p>Random forest can deal with missing data</p>
+<p>Bagging - lower performance than random forest</p>
+<p>Create a random forest model</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>rf_spec <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>(<span class="at">trees =</span> <span class="dv">1000</span>, <span class="at">mode =</span> <span class="st">"classification"</span>)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>rf_spec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>rf_wflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>(class <span class="sc">~</span> ., rf_spec)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>rf_wflow</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Evaluating model performance</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>ctrl_rs <span class="ot">&lt;-</span> <span class="fu">control_resamples</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Random forest uses random numbers so set the seed first</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>rf_res <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(rf_wflow, cell_rs, <span class="at">control =</span> ctrl_rs, <span class="at">metrics =</span> cls_metrics)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(rf_res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>kap = 0 - good</p>
+<p>kap &lt; 0 - do the opposite of what the model tells you</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_predictions</span>(rf_res) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(.pred_PS)) <span class="sc">+</span> </span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">col =</span> <span class="st">"white"</span>, <span class="at">bins =</span> <span class="dv">30</span>) <span class="sc">+</span> </span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> class, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Predictors don’t work in text data, they need numeric data - convert to binary</p>
+<p>Centering and scaling data - required by some models - all columns wit mean of zero, stdeviation = 1</p>
+<section id="recipes" class="level4">
+<h4 class="anchored" data-anchor-id="recipes">Recipes</h4>
+<p>Start a recipe</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>cell_rec <span class="ot">&lt;-</span> </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(class <span class="sc">~</span> ., <span class="at">data =</span> cell_tr) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>before ~</code> - outcomes,<code>after ~</code> predictors, <code>.</code> - all data except class</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cell_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>cell_rec <span class="ot">&lt;-</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(class <span class="sc">~</span> ., <span class="at">data =</span> cell_tr) <span class="sc">%&gt;%</span> </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_YeoJohnson</span>(<span class="fu">all_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To add new recipe step - functions start with <code>step_</code></p>
+<p><code>step_YeoJohnson</code> Will make the predictors more symmetrical in the data.</p>
+<blockquote class="blockquote">
+<p>Not doing anything to the data yet</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>pca_rec <span class="ot">&lt;-</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(class <span class="sc">~</span> ., <span class="at">data =</span> cell_tr) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_YeoJohnson</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Take the training set, compute mean and sd from predicctors and use them to normalise. Centers and scales the numeric predictors</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a> pca_rec <span class="ot">&lt;-</span> </span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(class <span class="sc">~</span> ., <span class="at">data =</span> cell_tr) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_YeoJohnson</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_pca</span>(<span class="fu">all_predictors</span>(), <span class="at">num_comp =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>PCA needs centering and squaring (normalising)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>pca_rec <span class="ot">&lt;-</span> </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(class <span class="sc">~</span> ., <span class="at">data =</span> cell_tr) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_YeoJohnson</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_pls</span>(<span class="fu">all_predictors</span>(), <span class="at">outcome =</span> <span class="fu">vars</span>(class), <span class="at">num_comp =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>PLS is supervised</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>filter_rec <span class="ot">&lt;-</span> </span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(class <span class="sc">~</span> ., <span class="at">data =</span> cell_tr) <span class="sc">%&gt;%</span> </span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_YeoJohnson</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_corr</span>(<span class="fu">all_numeric_predictors</span>(), <span class="at">threshold =</span> <span class="fl">0.9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To deal with highly correlated predictors, find the minimum set of predictor columns that make the pairwise correlations less than the threshold.</p>
+<p>After step_corr, you don’t know which vars were kept</p>
+<p>Try not to use actual variable names, use selectors like <code>any_of</code> , etc, instead of actual names</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>cell_pca_wflow <span class="ot">&lt;-</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(pca_rec) <span class="sc">%&gt;%</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(<span class="fu">logistic_reg</span>())</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>ctrl <span class="ot">&lt;-</span> <span class="fu">control_resamples</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">9</span>)</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>cell_glm_res <span class="ot">&lt;-</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  cell_pca_wflow <span class="sc">%&gt;%</span></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_resamples</span>(cell_rs, <span class="at">control =</span> ctrl, <span class="at">metrics =</span> cls_metrics)</span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(cell_glm_res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>package <code>textrecipes</code> for already made recipes so you don’t need to code them yourself</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>cell_pca_fit <span class="ot">&lt;-</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  cell_pca_wflow <span class="sc">%&gt;%</span> </span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(<span class="at">data =</span> cell_tr)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>cell_pca_fit <span class="sc">%&gt;%</span> </span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_recipe</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">number =</span> <span class="dv">1</span>)</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="co"># extract model</span></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>cell_pca_fit <span class="sc">%&gt;%</span> </span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_fit_parsnip</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>close to 1 - nothing happened</p>
+<p><code>number</code> means in which order</p>
+<p>Imputation steps can get large in size</p>
+<p>Available recipes: <code>https://www.tidymodels.org/find/recipes/</code></p>
+<p>There are some steps that should only be applied to the training set</p>
+<p>The order of steps matters - some steps require positive values</p>
+</section>
+<section id="tuning-parameters" class="level4">
+<h4 class="anchored" data-anchor-id="tuning-parameters">Tuning parameters</h4>
+<p>Try diff parameters and measure performance, find good parameters</p>
+<p><code>grid_search</code> - tests pre-defined set of candidate values. Inneficient</p>
+<p><code>iterative search</code> - suggests/estimates new values of candidate parameters to evaluate. Not so good for tabular data (?)</p>
+<section id="choosing-tuning-parameters" class="level5">
+<h5 class="anchored" data-anchor-id="choosing-tuning-parameters">Choosing tuning parameters</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>cell_rec <span class="ot">&lt;-</span> </span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(class <span class="sc">~</span> ., <span class="at">data =</span> cell_tr) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_YeoJohnson</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>())</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>glmn_spec <span class="ot">&lt;-</span> </span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">logistic_reg</span>(<span class="at">penalty =</span> <span class="fu">tune</span>(), <span class="at">mixture =</span> <span class="fu">tune</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"glmnet"</span>)</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>glmn_wflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>(cell_rec, glmn_spec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>glmnet - shrink closer to 0</p>
+<p><code>tune()</code> - don’t give any parameters</p>
+<p><code>dials</code> - package in tidymodels that manages parameters</p>
+</section>
+</section>
+<section id="grid-search" class="level4">
+<h4 class="anchored" data-anchor-id="grid-search">Grid search</h4>
+<p>Make your own or let tidymodels figure it out</p>
+</section>
+<section id="update-parameter-ranges" class="level4">
+<h4 class="anchored" data-anchor-id="update-parameter-ranges">Update parameter ranges</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">99</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>glmn_grid <span class="ot">&lt;-</span> </span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  glmn_wflow <span class="sc">%&gt;%</span> </span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_parameter_set_dials</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update</span>(<span class="at">penalty =</span> <span class="fu">penalty</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="sc">-</span><span class="dv">1</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid_latin_hypercube</span>(<span class="at">size =</span> <span class="dv">25</span>)</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>glmn_grid</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>latin hypercube</code> - space filling design</p>
+<ul>
+<li><p>A&nbsp;<em>space-filling design</em>&nbsp;like this tends to perform better than random grids.</p></li>
+<li><p>Space-filling designs are also usually more efficient than regular grids</p></li>
+</ul>
+<p>grid functions - columns for tuning parameters. Set seed beforehand</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>glmn_grid <span class="sc">%&gt;%</span> </span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(penalty, mixture)) <span class="sc">+</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>ctrl <span class="ot">&lt;-</span> <span class="fu">control_grid</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>, <span class="at">parallel_over =</span> <span class="st">"everything"</span>)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>glmn_res <span class="ot">&lt;-</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  glmn_wflow <span class="sc">%&gt;%</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_grid</span>(</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">resamples =</span> cell_rs,</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">grid =</span> glmn_grid,</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> ctrl,</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> cls_metrics</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Default - parallel over samples</p>
+<p>instead of doing <code>grid = glmn_grid</code> we can give it a number and let it create the matrix</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_best</span>(glmn_res, <span class="at">metric =</span> <span class="st">"brier_class"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>show_best</code> and <code>select_best</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>pls_rec <span class="ot">&lt;-</span> </span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  cell_rec <span class="sc">%&gt;%</span> </span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># do pls feature extraction</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_pls</span>(<span class="fu">all_predictors</span>(), <span class="at">outcome =</span> <span class="fu">vars</span>(class), <span class="at">num_comp =</span> <span class="fu">tune</span>())</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>pls_wflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>(pls_rec, <span class="fu">logistic_reg</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Slide 26 - 39 components is prob best</p>
+<p><code>last_fit</code> - after determining the best model, the final fit on the entire training set is needed and is then evaluated on the test set.</p>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

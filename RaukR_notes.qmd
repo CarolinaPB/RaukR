@@ -13,6 +13,8 @@ toc: true
 
 # Scripts, functions, and best practices
 
+[Posit cheatsheets](https://posit.co/resources/cheatsheets/)
+
 To run executable Rscript:
 
 1.  Make script executable `chmod +x myscript.R`
@@ -1001,3 +1003,215 @@ collect_predictions(rf_res) %>%
 Predictors don't work in text data, they need numeric data - convert to binary
 
 Centering and scaling data - required by some models - all columns wit mean of zero, stdeviation = 1
+
+#### Recipes
+
+Start a recipe
+
+```{r}
+cell_rec <- 
+  recipe(class ~ ., data = cell_tr) 
+```
+
+`before ~` - outcomes,`after ~` predictors, `.` - all data except class
+
+```{r}
+summary(cell_rec)
+```
+
+```{r}
+cell_rec <- 
+  recipe(class ~ ., data = cell_tr) %>% 
+  step_YeoJohnson(all_predictors())
+```
+
+To add new recipe step - functions start with `step_`
+
+`step_YeoJohnson` Will make the predictors more symmetrical in the data.
+
+> Not doing anything to the data yet
+
+```{r}
+pca_rec <- 
+  recipe(class ~ ., data = cell_tr) %>% 
+  step_YeoJohnson(all_predictors()) %>% 
+  step_normalize(all_predictors())
+```
+
+Take the training set, compute mean and sd from predicctors and use them to normalise. Centers and scales the numeric predictors
+
+```{r}
+ pca_rec <- 
+  recipe(class ~ ., data = cell_tr) %>% 
+  step_YeoJohnson(all_predictors()) %>% 
+  step_normalize(all_predictors()) %>% 
+  step_pca(all_predictors(), num_comp = 10)
+```
+
+PCA needs centering and squaring (normalising)
+
+```{r}
+pca_rec <- 
+  recipe(class ~ ., data = cell_tr) %>% 
+  step_YeoJohnson(all_predictors()) %>% 
+  step_normalize(all_predictors()) %>% 
+  step_pls(all_predictors(), outcome = vars(class), num_comp = 10)
+```
+
+PLS is supervised
+
+```{r}
+filter_rec <- 
+  recipe(class ~ ., data = cell_tr) %>% 
+  step_YeoJohnson(all_predictors()) %>% 
+  step_corr(all_numeric_predictors(), threshold = 0.9)
+```
+
+To deal with highly correlated predictors, find the minimum set of predictor columns that make the pairwise correlations less than the threshold.
+
+After step_corr, you don't know which vars were kept
+
+Try not to use actual variable names, use selectors like `any_of` , etc, instead of actual names
+
+```{r}
+cell_pca_wflow <-
+  workflow() %>%
+  add_recipe(pca_rec) %>%
+  add_model(logistic_reg())
+ 
+ctrl <- control_resamples(save_pred = TRUE)
+
+set.seed(9)
+cell_glm_res <-
+  cell_pca_wflow %>%
+  fit_resamples(cell_rs, control = ctrl, metrics = cls_metrics)
+
+collect_metrics(cell_glm_res)
+```
+
+package `textrecipes` for already made recipes so you don't need to code them yourself
+
+```{r}
+cell_pca_fit <-
+  cell_pca_wflow %>% 
+  fit(data = cell_tr)
+
+cell_pca_fit %>% 
+  extract_recipe() %>% 
+  tidy(number = 1)
+
+
+# extract model
+cell_pca_fit %>% 
+  extract_fit_parsnip() %>% 
+  tidy()
+```
+
+close to 1 - nothing happened
+
+`number` means in which order
+
+Imputation steps can get large in size
+
+Available recipes: `https://www.tidymodels.org/find/recipes/`
+
+There are some steps that should only be applied to the training set
+
+The order of steps matters - some steps require positive values
+
+#### Tuning parameters
+
+Try diff parameters and measure performance, find good parameters
+
+`grid_search` - tests pre-defined set of candidate values. Inneficient
+
+`iterative search` - suggests/estimates new values of candidate parameters to evaluate. Not so good for tabular data (?)
+
+##### Choosing tuning parameters
+
+```{r}
+cell_rec <- 
+  recipe(class ~ ., data = cell_tr) %>% 
+  step_YeoJohnson(all_predictors()) %>% 
+  step_normalize(all_predictors())
+
+glmn_spec <- 
+  logistic_reg(penalty = tune(), mixture = tune()) %>% 
+  set_engine("glmnet")
+
+glmn_wflow <- workflow(cell_rec, glmn_spec)
+```
+
+glmnet - shrink closer to 0
+
+`tune()` - don't give any parameters
+
+`dials` - package in tidymodels that manages parameters
+
+#### Grid search
+
+Make your own or let tidymodels figure it out
+
+#### Update parameter ranges
+
+```{r}
+set.seed(99)
+glmn_grid <- 
+  glmn_wflow %>% 
+  extract_parameter_set_dials() %>% 
+  update(penalty = penalty(c(-5, -1))) %>% 
+  grid_latin_hypercube(size = 25)
+
+glmn_grid
+```
+
+`latin hypercube` - space filling design
+
+-   A *space-filling design* like this tends to perform better than random grids.
+
+-   Space-filling designs are also usually more efficient than regular grids
+
+grid functions - columns for tuning parameters. Set seed beforehand
+
+```{r}
+glmn_grid %>% 
+  ggplot(aes(penalty, mixture)) +
+  geom_point(size = 4) +
+  scale_x_log10()
+```
+
+```{r}
+ctrl <- control_grid(save_pred = TRUE, parallel_over = "everything")
+
+glmn_res <-
+  glmn_wflow %>%
+  tune_grid(
+    resamples = cell_rs,
+    grid = glmn_grid,
+    control = ctrl,
+    metrics = cls_metrics
+  )
+```
+
+Default - parallel over samples
+
+instead of doing `grid = glmn_grid` we can give it a number and let it create the matrix
+
+```{r}
+show_best(glmn_res, metric = "brier_class")
+```
+
+`show_best` and `select_best`
+
+```{r}
+pls_rec <- 
+  cell_rec %>% 
+  # do pls feature extraction
+  step_pls(all_predictors(), outcome = vars(class), num_comp = tune())
+
+pls_wflow <- workflow(pls_rec, logistic_reg())
+```
+
+Slide 26 - 39 components is prob best
+
+`last_fit` - after determining the best model, the final fit on the entire training set is needed and is then evaluated on the test set.
